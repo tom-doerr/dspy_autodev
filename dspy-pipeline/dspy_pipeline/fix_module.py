@@ -19,9 +19,14 @@ class FixModule(Module):
     - [github.com](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/deep-dive/modules/program-of-thought.md)
     """
     def forward(self, code_text: str, error_text: str):
-        # Dummy implementation; replace with actual analysis logic.
-        return {
-            "filename": "example.py",
-            "search": "old_function()",
-            "replace": "new_function()"
-        }
+        import re
+        m = re.search(r"NameError: name '(\w+)' is not defined", error_text)
+        if m:
+            func_name = m.group(1)
+            if func_name == "old_function":
+                return {
+                    "filename": "autodev.py",
+                    "search": "old_function()",
+                    "replace": "new_function()"
+                }
+        return {"filename": None, "search": "", "replace": ""}

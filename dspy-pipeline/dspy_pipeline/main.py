@@ -78,10 +78,9 @@ def main_loop():
                 error_message = stderr if stderr.strip() else stdout
                 filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
                 if filename is None:
-                    console.print("[yellow]No fixer available for this error. Sleeping for 5 seconds...[/yellow]")
+                    console.print("[yellow]No fixer available for this error.[/yellow]")
                 else:
                     apply_fix(filename, search_block, replace_block)
-                time.sleep(5)
         else:
             print("No errors found.")
         time.sleep(5)
