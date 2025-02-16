@@ -39,6 +39,9 @@ def get_fix_instructions(code_text, error_text):
     return None, None, None
 
 def apply_fix(filename, search_block, replace_block):
+    if filename == "autodev.py":
+        console.print("[red]Skipping modification of autodev.py. Please fix autodev.py manually.[/red]")
+        return
     if os.path.exists(filename):
         with open(filename, 'r', encoding='utf8') as file:
             content = file.read()
