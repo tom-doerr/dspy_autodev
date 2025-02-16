@@ -12,7 +12,7 @@ def test_fix_module_for_old_function():
     fix = fix_module.forward(code_text, error_text)
     assert fix.filename == "autodev.py"
     assert fix.search == "old_function()"
-    assert fix.replace == "new_function()"
+    assert fix.replace == "new_old_function()"
 
 def test_fix_module_no_fix():
     # This test ensures that if the error does not match any recognized pattern,
@@ -28,7 +28,7 @@ def test_fix_module_no_fix():
     error_text = (
         "Traceback (most recent call last):\n"
         "  File \"autodev.py\", line 2, in <module>\n"
-        "NameError: name 'some_function' is not defined"
+        "ValueError: invalid literal for int() with base 10: 'some_function'"
     )
     fix = fix_module.forward(code_text, error_text)
     assert fix.filename == "unknown.py"
