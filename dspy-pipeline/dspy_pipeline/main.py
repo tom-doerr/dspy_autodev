@@ -70,6 +70,9 @@ def main_loop():
     except KeyboardInterrupt:
         print("Exiting main loop.")
 
-if __name__ == '__main__':
+def main():
     helper_function()
     main_loop()
+
+if __name__ == '__main__':
+    main()
