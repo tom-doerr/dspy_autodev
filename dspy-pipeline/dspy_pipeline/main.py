@@ -70,7 +70,9 @@ def main_loop():
         while True:
             retcode, stdout, stderr = run_autodev()
             if retcode != 0 or stderr.strip():
-                print("Error encountered, running fixer.")
+                console.print("[red]Error encountered while running autodev.py[/red]")
+                console.print("[yellow]Error details:[/yellow]")
+                console.print(stderr if stderr.strip() else stdout)
                 try:
                     with open('autodev.py', 'r', encoding='utf8') as f:
                         autodev_source = f.read()
@@ -79,18 +81,23 @@ def main_loop():
                 code_contents = gather_code_contents() + "\nautodev.py:\n" + autodev_source
                 error_message = stderr if stderr.strip() else stdout
                 filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
+                console.print("[blue]Fix instruction generated:[/blue]")
+                console.print(f"Filename: {filename}")
+                console.print(f"Search block: {search_block}")
+                console.print(f"Replace block: {replace_block}")
                 if filename is None:
                     console.print("[yellow]No fixer available for this error.[/yellow]")
                 else:
                     apply_fix(filename, search_block, replace_block)
-        else:
-            print("No errors found.")
-        time.sleep(5)
-        if os.path.exists('autodev.py'):
-            new_mod_time = os.path.getmtime('autodev.py')
-            if new_mod_time != last_mod_time:
-                print("Change detected in autodev.py, re-running pipeline.")
-                last_mod_time = new_mod_time
+            else:
+                console.print("[green]autodev.py ran successfully.[/green]")
+            console.print("Sleeping for 5 seconds before next check...")
+            time.sleep(5)
+            if os.path.exists('autodev.py'):
+                new_mod_time = os.path.getmtime('autodev.py')
+                if new_mod_time != last_mod_time:
+                    console.print("[blue]Change detected in autodev.py, re-running pipeline.[/blue]")
+                    last_mod_time = new_mod_time
 
     except KeyboardInterrupt:
         print("Exiting main loop.")
