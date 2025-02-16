@@ -28,6 +28,7 @@ class FixApplier:
 
                     console.print(f"[green]Applied patch to {filename}.[/green]")
                 else:
+                    logging.warning(f"Search block not found in {filename}. No replacement applied.")
                     console.print(f"[red]Search block not found in {filename}.[/red]")
                     console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
                     console.print(f"[yellow]Replace block:[/yellow]")
