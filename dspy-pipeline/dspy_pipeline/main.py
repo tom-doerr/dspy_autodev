@@ -46,7 +46,7 @@ def get_fix_instructions(code_text: str, error_text: str):
 def apply_fix(filename: str, search_block: str, replace_block: str):
     # Prevent edits to autodev.py per guidelines from [jetbrains.com](https://www.jetbrains.com/guide/python/tips/move-block/) 
     # and [computercraft.info](https://computercraft.info/wiki/Rename)
-    if filename == "autodev.py":
+    if os.path.basename(filename) == "autodev.py":
         console.print("[red]Skipping modification of autodev.py. Please fix autodev.py manually.[/red]")
         return
     if os.path.exists(filename):
@@ -60,7 +60,8 @@ def apply_fix(filename: str, search_block: str, replace_block: str):
         else:
             console.print(f"[red]Search block not found in {filename}.[/red]")
             console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
-            console.print(f"[yellow]Replace block:[/yellow] {replace_block}")
+            console.print(f"[yellow]Replace block:[/yellow]")
+            console.print(replace_block)
     else:
         with open(filename, 'w', encoding='utf8') as file:
             file.write(replace_block)
