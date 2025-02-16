@@ -27,8 +27,9 @@ class FixModule(Module):
         m = re.search(r"NameError: name '(\w+)' is not defined", error_text)
         if m:
             func_name = m.group(1)
-            if func_name == "old_function":
-                return FixSignature(code_text=code_text, error_text=error_text, filename="autodev.py", search="old_function()", replace="new_function()")
+            search_block = f"{func_name}()"
+            replace_block = f"new_{func_name}()"  # Or provide a more sophisticated replacement strategy
+            return FixSignature(code_text=code_text, error_text=error_text, filename="autodev.py", search=search_block, replace=replace_block)
         # Check if the error indicates a missing file, e.g., FileNotFoundError pattern
         m2 = re.search(r"No such file or directory: '([^']+)'", error_text)
         if m2:
