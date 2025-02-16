@@ -14,11 +14,11 @@ class CodeGatherer:
     def gather_code(self, extensions=(".py",)):
         """
         Gathers code from all files with the specified extensions within the root directory.
-
+    
         Args:
             extensions (tuple): A tuple of file extensions to include in the code gathering process.
                                  Defaults to Python files (".py").
-
+    
         Returns:
             dict: A dictionary where keys are file paths and values are the corresponding code content.
         """
