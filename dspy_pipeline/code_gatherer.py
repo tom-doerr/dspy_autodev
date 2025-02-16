@@ -1,4 +1,7 @@
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class CodeGatherer:
     def __init__(self, root_dir="."):
@@ -30,7 +33,7 @@ class CodeGatherer:
                         with open(filepath, "r", encoding="utf-8") as f:
                             code_dict[filepath] = f.read()
                     except Exception as e:
-                        print(f"Error reading file {filepath}: {e}")  # Consider using logging instead of print
+                        logging.error(f"Error reading file {filepath}: {e}")
         return code_dict
 
     def get_code_for_file(self, filename):
@@ -47,8 +50,8 @@ class CodeGatherer:
             with open(filename, "r", encoding="utf-8") as f:
                 return f.read()
         except FileNotFoundError:
-            print(f"File not found: {filename}") # Consider using logging instead of print
+            logging.error(f"File not found: {filename}")
             return None
         except Exception as e:
-            print(f"Error reading file {filename}: {e}") # Consider using logging instead of print
+            logging.error(f"Error reading file {filename}: {e}")
             return None

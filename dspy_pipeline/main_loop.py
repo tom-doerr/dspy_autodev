@@ -1,13 +1,17 @@
 from dspy_pipeline.code_gatherer import CodeGatherer
-from dspy_pipeline.autodev_runner import AutodevRunner  # Add this import
-from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator  # Add this import
+from dspy_pipeline.autodev_runner import AutodevRunner
+from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
+from dspy_pipeline.fix_applier import FixApplier
+import logging
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MainLoop:
     def __init__(self):
         self.autodev_runner = AutodevRunner()
-        self.code_gatherer = CodeGatherer() # Instantiate CodeGatherer
+        self.code_gatherer = CodeGatherer()
         self.fix_instruction_generator = FixInstructionGenerator()
+        self.fix_applier = FixApplier()
 
     def run(self):
         """
@@ -26,10 +30,18 @@ class MainLoop:
             combined_code = code_contents + "\nautodev.py:\n" + autodev_source
 
             # Generate fix instructions from the error and code
-            fix_instructions = self.fix_instruction_generator.get_fix_instructions(combined_code, autodev_result.stderr)
+            try:
+                fix_instructions = self.fix_instruction_generator.get_fix_instructions(combined_code, autodev_result.stderr)
 
-            # Print the fix instructions
-            print(fix_instructions)
+                # Apply the fix
+                self.fix_applier.apply_fix(fix_instructions.filename, fix_instructions.search, fix_instructions.replacement)
+                logging.info(f"Applied fix to {fix_instructions.filename}")
 
+            except Exception as e:
+                logging.error(f"Error generating or applying fix: {e}")
+
+
+        except FileNotFoundError as e:
+            logging.error(f"File not found: {e}")
         except Exception as e:
-            print(f"An error occurred: {e}")
+            logging.error(f"An unexpected error occurred: {e}")
