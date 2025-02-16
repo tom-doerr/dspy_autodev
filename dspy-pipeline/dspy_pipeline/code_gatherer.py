@@ -24,27 +24,21 @@ class CodeGatherer:
         """
         code_dict = {}
         errors = []
-        for root, _, files in os.walk(self.root_dir):
-            for file in files:
-                if file.endswith(extensions):
-                    filepath = os.path.join(root, file)
+        try:
+            for file in os.listdir(self.root_dir):
+                filepath = os.path.join(self.root_dir, file)
+                if os.path.isfile(filepath) and file.endswith(extensions):
                     try:
-                        with open(filepath, "r", encoding="utf-8") as f:
+                        with open(filepath, "r", encoding="utf8") as f:
                             code_dict[filepath] = f.read()
-                    except UnicodeDecodeError:
-                        try:
-                            with open(filepath, "r", encoding="latin-1") as f:
-                                code_dict[filepath] = f.read()
-                            logging.warning(f"Successfully read {filepath} with latin-1 encoding.")
-                        except Exception as e:
-                            error_message = f"Error reading file {filepath}: {e}"
-                            logging.error(error_message)
-                            errors.append(error_message)
                     except Exception as e:
                         error_message = f"Error reading file {filepath}: {e}"
                         logging.error(error_message)
                         errors.append(error_message)
-        return code_dict, errors
+            return code_dict, errors
+        except Exception as e:
+            errors.append(str(e))
+            return code_dict, errors
 
     def get_code_for_file(self, filename):
         """
