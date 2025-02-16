@@ -26,7 +26,7 @@ class FixApplier:
                     new_content = content.replace(search_block, replace_block, 1)
 
                     with open(filename, 'w', encoding='utf8') as file:
-                        file.write(content)
+                        file.write(new_content)
 
                     console.print(f"[green]Applied patch to {filename}.[/green]")
                 else:
