@@ -48,6 +48,8 @@ def apply_fix(filename, search_block, replace_block):
             console.print(f"[green]Applied patch to {filename}.[/green]")
         else:
             console.print(f"[red]Search block not found in {filename}.[/red]")
+            console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
+            console.print(f"[yellow]Replace block:[/yellow] {replace_block}")
     else:
         with open(filename, 'w', encoding='utf8') as file:
             file.write(replace_block)
