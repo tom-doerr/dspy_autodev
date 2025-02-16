@@ -1,6 +1,6 @@
 import os
 import pytest
-from dpsy_pipeline.main import get_fix_instructions, apply_fix
+from dspy_pipeline.main import get_fix_instructions, apply_fix
 
 def test_get_fix_instructions():
     code_text = "dummy code"

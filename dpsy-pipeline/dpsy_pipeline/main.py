@@ -1,7 +1,7 @@
 import os
 import subprocess
 import time
-from dpsy_pipeline.utils import helper_function
+from dspy_pipeline.utils import helper_function
 
 def run_autodev():
     result = subprocess.run(
