@@ -12,6 +12,11 @@ class FixModule(Module):
     - [en.wikipedia.org](https://en.wikipedia.org/wiki/Working_directory)
     - [current.workingdirectory.net](https://current.workingdirectory.net/cwd/)
     - [computerhope.com](https://www.computerhope.com/jargon/c/currentd.htm)
+
+    Other references from recent research include:
+    - [dspy.ai](https://dspy.ai/)
+    - [ibm.com](https://www.ibm.com/think/tutorials/prompt-engineering-with-dspy)
+    - [github.com](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/deep-dive/modules/program-of-thought.md)
     """
     def forward(self, code_text: str, error_text: str):
         # Dummy implementation; replace with actual analysis logic.
