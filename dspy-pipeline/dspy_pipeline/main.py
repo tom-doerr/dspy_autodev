@@ -40,14 +40,15 @@ def get_fix_instructions(code_text, error_text):
     from dspy import LM
     lm = LM(model="openrouter/google/gemini-2.0-flash-001")
     prompt = (
-        "Given the following code and error, generate fix instructions in the format:\n"
+        "Given the following code, error message, and error traceback, generate fix instructions in the format:\n"
         "Filename: <filename>\n"
         "<<<<<<< SEARCH\n"
         "<search block>\n"
         "=======\n"
         "<replace block>\n"
         ">>>>>>> REPLACE\n\n"
-        "Code:\n" + code_text + "\n\nError:\n" + error_text + "\n"
+        "Ensure that your fix accounts for the full context and refers to best practices as outlined in the DSPy Cheatsheet [dspy.ai](https://dspy.ai/cheatsheet/) and additional guidelines from [dspy-docs.vercel.app](https://dspy-docs.vercel.app/api/category/modules).\n\n"
+        "Code:\n" + code_text + "\n\nError Traceback:\n" + error_text + "\n"
     )
     fix_response = lm.generate(prompt)
     # For demonstration purposes, parse a dummy response.
@@ -141,7 +142,7 @@ def print_dspy_signature():
         "=======\n"
         "<replace block>\n"
         ">>>>>>> REPLACE\n\n"
-        "Ensure that the patch addresses both the error details and its traceback.\n\n"
+        "Ensure that the patch addresses both the error details and its traceback. Refer to the DSPy Cheatsheet [dspy.ai](https://dspy.ai/cheatsheet/) for common usage patterns and best practices.\n\n"
         "Code:\n"
         "... (truncated for brevity)\n"
     )
