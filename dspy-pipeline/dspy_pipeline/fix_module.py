@@ -31,9 +31,22 @@ class FixModule(Module):
             replace_block = f"new_{func_name}()"  # Or provide a more sophisticated replacement strategy
             return FixSignature(code_text=code_text, error_text=error_text, filename="autodev.py", search=search_block, replacement=replace_block)
         # Check if the error indicates a missing file, e.g., FileNotFoundError pattern
-        m2 = re.search(r"No such file or directory: '([^']+)'", error_text)
+        m2 = re.search(r"ModuleNotFoundError: No module named '([^']+)'", error_text)
         if m2:
-            missing_file = m2.group(1)
-            return FixSignature(code_text=code_text, error_text=error_text, filename=missing_file, search="", replacement="# New file created by autodev-pipeline\n")
+            missing_module = m2.group(1)
+            return FixSignature(code_text=code_text, error_text=error_text, filename=f"{missing_module}.py", search="", replacement="# New file created by autodev-pipeline\n")
+        # Fallback: if no known error pattern is matched, instruct manual creation of a new file.
+        if code_text == "":
+            return FixSignature(code_text=code_text, error_text=error_text, filename="unknown.py", search="", replacement="# Please add the file content here")
+        if m:
+            func_name = m.group(1)
+            search_block = f"{func_name}()"
+            replace_block = f"new_{func_name}()"  # Or provide a more sophisticated replacement strategy
+            return FixSignature(code_text=code_text, error_text=error_text, filename="autodev.py", search=search_block, replacement=replace_block)
+        # Check if the error indicates a missing file, e.g., FileNotFoundError pattern
+        m2 = re.search(r"ModuleNotFoundError: No module named '([^']+)'", error_text)
+        if m2:
+            missing_module = m2.group(1)
+            return FixSignature(code_text=code_text, error_text=error_text, filename=f"{missing_module}.py", search="", replacement="# New file created by autodev-pipeline\n")
         # Fallback: if no known error pattern is matched, instruct manual creation of a new file.
         return FixSignature(code_text=code_text, error_text=error_text, filename="unknown.py", search="", replacement="# Please add the file content here")
