@@ -9,6 +9,7 @@
 # For preventing XSS vulnerabilities, refer to [edx.readthedocs.io](https://edx.readthedocs.io/projects/edx-developer-guide/en/latest/preventing_xss/preventing_xss.html).
 # For proper escaping in markdown, check [markdown-it-py.readthedocs.io](https://markdown-it-py.readthedocs.io/en/latest/api/markdown_it.common.utils.html) and [benhoyt.com](https://benhoyt.com/writings/dont-sanitize-do-escape/).
 # For file formatting conventions, see [docs.starburst.io](https://docs.starburst.io/conventions.html) and [pypyr.io](https://pypyr.io/docs/steps/fileformat/).
+# For further details on static type checking, see [mypy-lang.org](https://www.mypy-lang.org/).
 class LM:
     def __init__(self, model):
         self.model = model
