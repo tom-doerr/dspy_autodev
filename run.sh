@@ -7,6 +7,6 @@ fi
 echo "Building project..."
 poetry build
 echo "Installing package globally for current user..."
-pip install --user dist/autodev-pipeline-0.1.0-py3-none-any.whl
+pip install --user dist/autodev_pipeline-0.1.0-py3-none-any.whl
 echo "Running CLI command..."
 audev
