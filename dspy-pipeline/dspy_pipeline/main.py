@@ -35,13 +35,13 @@ def gather_code_contents():
                 combined += f"{path}:\n" + file.read() + "\n\n"
     return combined
 
-def get_fix_instructions(code_text, error_text):
+def get_fix_instructions(code_text: str, error_text: str):
     from dspy_pipeline.fix_module import FixModule
     fix_module = FixModule()
     fix_result = fix_module.forward(code_text, error_text)
-    return fix_result["filename"], fix_result["search"], fix_result["replace"]
+    return fix_result.filename, fix_result.search, fix_result.replace
 
-def apply_fix(filename, search_block, replace_block):
+def apply_fix(filename: str, search_block: str, replace_block: str):
     # Prevent edits to autodev.py per guidelines from [jetbrains.com](https://www.jetbrains.com/guide/python/tips/move-block/) 
     # and [computercraft.info](https://computercraft.info/wiki/Rename)
     if filename == "autodev.py":

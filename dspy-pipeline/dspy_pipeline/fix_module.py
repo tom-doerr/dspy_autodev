@@ -1,8 +1,9 @@
 from dspy import Module
+from dspy_pipeline.fix_signature import FixSignature
 
 class FixModule(Module):
     """
-    DSPy Module for generating fix instructions based on code and error traceback.
+    DSPy Module for generating fix instructions based on code and error traceback, using the FixSignature.
 
     This module replaces the old prompt-based LM fix generator. It processes the
     complete source code and error message, then outputs a dictionary with keys:
@@ -20,7 +21,7 @@ class FixModule(Module):
 
     
     """
-    def forward(self, code_text: str, error_text: str):
+    def forward(self, code_text: str, error_text: str) -> FixSignature:
         import re
         # Check for a NameError related to "old_function"
         m = re.search(r"NameError: name '(\w+)' is not defined", error_text)
