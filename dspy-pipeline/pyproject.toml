@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "dspy-pipeline"
+name = "autodev-pipeline"
 version = "0.1.0"
 description = "Dspy pipeline package"
 authors = ["Tom Dörr <tomdoerr96@gmail.com>"]
