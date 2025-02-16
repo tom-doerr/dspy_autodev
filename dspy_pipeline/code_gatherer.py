@@ -1,8 +1,6 @@
 import os
 import logging
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')  # REMOVE THIS LINE
-
 class CodeGatherer:
     def __init__(self, root_dir="."):
         """

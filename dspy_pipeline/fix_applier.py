@@ -3,8 +3,6 @@ import logging
 import re
 from rich.console import Console
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') # REMOVE THIS LINE
-
 console = Console()
 
 class FixApplier:
@@ -22,11 +20,12 @@ class FixApplier:
                 with open(filename, 'r', encoding='utf8') as file:
                     content = file.read()
 
+                # Only replace the first occurrence
                 if search_block in content:
-                    new_content = content.replace(search_block, replace_block, 1)
+                    content = content.replace(search_block, replace_block, 1)
 
                     with open(filename, 'w', encoding='utf8') as file:
-                        file.write(new_content)
+                        file.write(content)
 
                     console.print(f"[green]Applied patch to {filename}.[/green]")
                 else:

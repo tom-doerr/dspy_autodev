@@ -4,13 +4,11 @@ from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
 from dspy_pipeline.fix_applier import FixApplier
 import logging
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') # REMOVE THIS LINE
-
 class MainLoop:
     def __init__(self):
         self.autodev_runner = AutodevRunner()
         self.code_gatherer = CodeGatherer()
-        self.fix_instruction_generator = FixInstructionGenerator() # No need to pass the LM here
+        self.fix_instruction_generator = FixInstructionGenerator()
         self.fix_applier = FixApplier()
 
     def run(self):
@@ -31,7 +29,7 @@ class MainLoop:
 
             # Generate fix instructions from the error and code
             try:
-                fix_instructions = self.fix_instruction_generator(code=combined_code, error=autodev_result.stderr) # Call the FixInstructionGenerator
+                fix_instructions = self.fix_instruction_generator.forward(code=combined_code, error=autodev_result[2])
 
                 # Apply the fix
                 self.fix_applier.apply_fix(fix_instructions.filename, fix_instructions.search, fix_instructions.replacement)

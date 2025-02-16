@@ -4,8 +4,6 @@ from dspy.signatures import Signature
 from dspy_pipeline.fix_module import FixModule, UNKNOWN_FILE, MISSING_CONTENT_COMMENT, NEW_FILE_COMMENT
 from dspy_pipeline.fix_signature import FixSignature
 
-# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') # REMOVE THIS LINE
-
 class ErrorToFix(Signature):
     """
     Given code and an error traceback, generate a fix.
@@ -29,8 +27,11 @@ class FixInstructionGenerator(dspy.Module):
         try:
             # Use the DSPy Predict module to generate fix instructions
             prediction = self.predictor(code=code, error=error)
-            return FixSignature(filename=prediction.filename, search=prediction.search, replacement=prediction.replacement)
+            return FixSignature(filename=prediction.filename, search=prediction.search, replacement=prediction.replacement, code_text=code, error_text=error)
 
         except Exception as e:
             logging.exception(f"Error generating fix instructions: {e}")
-            return FixSignature(filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}")
+            return FixSignature(filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}", code_text=code, error_text=error)
+
+    def get_fix_instructions(self, code: str, error: str) -> FixSignature:
+        return self.forward(code, error)
