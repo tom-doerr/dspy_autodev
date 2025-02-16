@@ -51,8 +51,8 @@ def main_loop():
     last_mod_time = os.path.getmtime('autodev.py') if os.path.exists('autodev.py') else 0
     try:
         while True:
-        retcode, stdout, stderr = run_autodev()
-        if retcode != 0 or stderr.strip():
+            retcode, stdout, stderr = run_autodev()
+            if retcode != 0 or stderr.strip():
             print("Error encountered, running fixer.")
             code_contents = gather_code_contents()
             error_message = stderr if stderr.strip() else stdout
