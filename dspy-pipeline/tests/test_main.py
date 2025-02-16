@@ -1,3 +1,4 @@
 import os
 import pytest
-from dspy_pipeline.main import get_fix_instructions, apply_fix
+from ..dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
+from ..dspy_pipeline.fix_applier import FixApplier
