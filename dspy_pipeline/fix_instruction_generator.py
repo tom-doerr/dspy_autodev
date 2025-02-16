@@ -6,14 +6,6 @@ from dspy_pipeline.fix_signature import FixSignature
 
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') # REMOVE THIS LINE
 
-def generate_fix_instructions(code_text: str, error_text: str) -> FixSignature:
-    """
-    Generates fix instructions (filename, search string, replacement string) based on the code and error.
-    """
-    fix_module = FixModule()
-    fix_signature = fix_module.forward(code_text, error_text)
-    return fix_signature
-
 class ErrorToFix(Signature):
     """
     Given code and an error traceback, generate a fix.
