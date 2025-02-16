@@ -53,11 +53,11 @@ def main_loop():
         while True:
             retcode, stdout, stderr = run_autodev()
             if retcode != 0 or stderr.strip():
-            print("Error encountered, running fixer.")
-            code_contents = gather_code_contents()
-            error_message = stderr if stderr.strip() else stdout
-            filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
-            apply_fix(filename, search_block, replace_block)
+                print("Error encountered, running fixer.")
+                code_contents = gather_code_contents()
+                error_message = stderr if stderr.strip() else stdout
+                filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
+                apply_fix(filename, search_block, replace_block)
         else:
             print("No errors found.")
         time.sleep(5)
