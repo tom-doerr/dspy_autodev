@@ -97,16 +97,17 @@ def main_loop():
 # This signature is based on best practices as discussed in [usecodeblocks.com](https://usecodeblocks.com/) and [aider.chat](https://aider.chat/docs/usage.html).
 def print_dspy_signature():
     signature = (
-        "Given the following code, error message, and error traceback, generate fix instructions in the format:\n"
-        "Filename: <filename>\n"
-        "<<<<<<< SEARCH\n"
-        "<search block>\n"
-        "=======\n"
-        "<replace block>\n"
-        ">>>>>>> REPLACE\n\n"
-        "Ensure that the patch addresses both the error details and its traceback. Refer to the DSPy Cheatsheet [dspy.ai](https://dspy.ai/cheatsheet/) for common usage patterns and best practices.\n\n"
-        "Code:\n"
-        "... (truncated for brevity)\n"
+        "DSPy Fix Instruction Signature:\n"
+        "Inputs:\n"
+        "  code: str - Combined source code from all files (including autodev.py).\n"
+        "  error: str - Error message and traceback from execution.\n"
+        "\n"
+        "Outputs:\n"
+        "  filename: str - File path to apply the fix or create if it does not exist.\n"
+        "  search: str - Code block to search for (empty if creating a new file).\n"
+        "  replace: str - Replacement code or initial file content.\n"
+        "\n"
+        "Defined in dspy_pipeline/fix_instruction_signature.py. See details at [current.workingdirectory.net](https://current.workingdirectory.net/cwd/) and [geeksforgeeks.org](https://www.geeksforgeeks.org/get-current-directory-python/)."
     )
     print(signature)
 
