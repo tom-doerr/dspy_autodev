@@ -1,3 +1,4 @@
+# Based on insights from the Stanford dspy project.
 class LM:
     def __init__(self, model):
         self.model = model
