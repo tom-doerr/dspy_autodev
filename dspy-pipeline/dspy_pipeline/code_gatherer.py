@@ -1,8 +1,6 @@
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO)  # Configure logging
-
 class CodeGatherer:
     def __init__(self, root_dir="."):
         """
