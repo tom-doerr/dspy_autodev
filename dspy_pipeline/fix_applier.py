@@ -22,11 +22,8 @@ class FixApplier:
                 with open(filename, 'r', encoding='utf8') as file:
                     content = file.read()
 
-                # Use regex substitution with negative lookbehind and negative lookahead to match only whole tokens.
-                pattern = r'(?<![\w])' + re.escape(search_block) + r'(?![\w])'
-                if re.search(pattern, content):
-                    new_content = re.sub(pattern, replace_block, content, count=1)
-                    content = new_content
+                if search_block in content:
+                    new_content = content.replace(search_block, replace_block, 1)
 
                     with open(filename, 'w', encoding='utf8') as file:
                         file.write(content)
