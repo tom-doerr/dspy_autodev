@@ -1,7 +1,7 @@
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')  # REMOVE THIS LINE
 
 class CodeGatherer:
     def __init__(self, root_dir="."):
@@ -14,17 +14,39 @@ class CodeGatherer:
         self.root_dir = root_dir
 
     def gather_code(self, extensions=(".py",)):
+        """
+        Gathers code from all files with the specified extensions within the root directory.
+
+        Args:
+            extensions (tuple): A tuple of file extensions to include in the code gathering process.
+                                 Defaults to Python files (".py").
+
+        Returns:
+            dict: A dictionary where keys are file paths and values are the corresponding code content.
+        """
         code_dict = {}
-        for file in os.listdir(self.root_dir):
-            if file.endswith(extensions):
-                filepath = os.path.join(self.root_dir, file)
-                filepath = os.path.abspath(filepath)
-                try:
-                    with open(filepath, "r", encoding="utf-8") as f:
-                        code_dict[filepath] = f.read()
-                except Exception as e:
-                    logging.error(f"Error reading file {filepath}: {e}")
-        return code_dict
+        errors = []
+        for root, _, files in os.walk(self.root_dir):
+            for file in files:
+                if file.endswith(extensions):
+                    filepath = os.path.join(root, file)
+                    try:
+                        with open(filepath, "r", encoding="utf-8") as f:
+                            code_dict[filepath] = f.read()
+                    except UnicodeDecodeError:
+                        try:
+                            with open(filepath, "r", encoding="latin-1") as f:
+                                code_dict[filepath] = f.read()
+                            logging.warning(f"Successfully read {filepath} with latin-1 encoding.")
+                        except Exception as e:
+                            error_message = f"Error reading file {filepath}: {e}"
+                            logging.error(error_message)
+                            errors.append(error_message)
+                    except Exception as e:
+                        error_message = f"Error reading file {filepath}: {e}"
+                        logging.error(error_message)
+                        errors.append(error_message)
+        return code_dict, errors
 
     def get_code_for_file(self, filename):
         """
@@ -40,7 +62,7 @@ class CodeGatherer:
             with open(filename, "r", encoding="utf-8") as f:
                 return f.read()
         except FileNotFoundError:
-            logging.error(f"File not found: {filename}")
+            logging.warning(f"File not found: {filename}")
             return None
         except Exception as e:
             logging.error(f"Error reading file {filename}: {e}")
