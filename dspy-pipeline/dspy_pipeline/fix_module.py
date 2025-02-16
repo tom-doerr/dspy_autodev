@@ -26,7 +26,7 @@ class FixModule(Module):
             return FixSignature(code_text=code_text, error_text=error_text, filename=AUTODEV_FILE, search=search_block, replacement=replace_block)
 
         # If the error indicates a missing module, create a new file
-        module_not_found_match = re.search(r"ModuleNotFoundError: No module named '(\w+)'", error_text)
+        module_not_found_match = re.search(r"ModuleNotFoundError: No module named \'(\w+)\'", error_text)
         if module_not_found_match:
             missing_module = module_not_found_match.group(1)
             return FixSignature(code_text=code_text, error_text=error_text, filename=f"{missing_module}.py", search="", replacement=NEW_FILE_COMMENT)
