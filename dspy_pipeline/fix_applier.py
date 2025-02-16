@@ -1,5 +1,6 @@
 import os
 import logging
+import re
 from rich.console import Console
 
 # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s') # REMOVE THIS LINE
