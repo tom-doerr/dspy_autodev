@@ -15,8 +15,3 @@ class AutodevRunner:
             console.print("[yellow]stderr:[/yellow]")
             console.print(result.stderr)
         return result.returncode, result.stdout, result.stderr
-``````
-
-dspy-pipeline/dspy_pipeline/code_gatherer.py
-``````
-<<<<<<< SEARCH
