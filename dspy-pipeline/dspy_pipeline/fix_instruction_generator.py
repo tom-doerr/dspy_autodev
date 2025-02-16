@@ -5,8 +5,3 @@ class FixInstructionGenerator:
         fix_module = FixModule()
         fix_result = fix_module.forward(code_text, error_text)
         return fix_result.filename, fix_result.search, fix_result.replacement
-``````
-
-dspy-pipeline/dspy_pipeline/fix_applier.py
-``````
-<<<<<<< SEARCH
