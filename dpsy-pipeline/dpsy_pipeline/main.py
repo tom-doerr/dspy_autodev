@@ -49,7 +49,8 @@ def apply_fix(filename, search_block, replace_block):
 
 def main_loop():
     last_mod_time = os.path.getmtime('autodev.py') if os.path.exists('autodev.py') else 0
-    while True:
+    try:
+        while True:
         retcode, stdout, stderr = run_autodev()
         if retcode != 0 or stderr.strip():
             print("Error encountered, running fixer.")
@@ -65,6 +66,9 @@ def main_loop():
             if new_mod_time != last_mod_time:
                 print("Change detected in autodev.py, re-running pipeline.")
                 last_mod_time = new_mod_time
+
+    except KeyboardInterrupt:
+        print("Exiting main loop.")
 
 if __name__ == '__main__':
     helper_function()
