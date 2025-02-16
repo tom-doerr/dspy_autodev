@@ -9,4 +9,4 @@ python = "^3.8"
 rich = "^13.0.0"
 
 [tool.poetry.scripts]
-dauto = "dspy_pipeline.main:main"
+autodev = "dspy_pipeline.main:main"
