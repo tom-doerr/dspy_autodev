@@ -67,6 +67,14 @@ def test_fix_applier_file_exists_and_modified(tmpdir):
     assert "new_old_function()" in content
     assert "old_function()" not in content.strip()
 
+def test_fix_applier_file_exists_and_modified_windows_line_endings(tmpdir):
+    file_path = tmpdir.join("test_file.py")
+    file_path.write("def some_code():\r\n    old_function()\r\n")
+    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    content = file_path.read()
+    assert "new_old_function()" in content
+    assert "old_function()" not in content.strip()
+
 def test_fix_applier_file_exists_but_search_block_not_found(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\n    another_function()\n")
