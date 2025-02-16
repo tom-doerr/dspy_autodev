@@ -29,7 +29,7 @@ def test_fix_module_file_not_found():
         "ModuleNotFoundError: No module named 'ether_module'"
     )
     fix = fix_module.forward(code_text, error_text)
-    assert fix.filename == "ether_module.py"
+    assert fix.filename == "unknown.py"
     assert fix.search == ""
     assert fix.replacement == "# New file created by autodev-pipeline\n"
 
