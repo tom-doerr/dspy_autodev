@@ -15,6 +15,10 @@ def run_autodev():
         capture_output=True,
         text=True
     )
+    if result.returncode != 0:
+        console.print("[red]Error encountered while running autodev.py:[/red]")
+        console.print("[yellow]stderr:[/yellow]")
+        console.print(result.stderr)
     return result.returncode, result.stdout, result.stderr
 
 def gather_code_contents():
