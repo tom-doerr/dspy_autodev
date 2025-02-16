@@ -7,4 +7,4 @@ fi
 echo "Installing project dependencies..."
 poetry install
 echo "Running CLI command..."
-poetry run autodev
+poetry run audev
