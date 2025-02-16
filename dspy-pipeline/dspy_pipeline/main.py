@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+import dspy
 from dspy_pipeline.utils import helper_function
 try:
     from rich.console import Console
