@@ -1,7 +1,7 @@
 import pytest
 import os
 from dspy_pipeline.fix_module import FixModule
-from dspy_pipeline.main import apply_fix
+from dspy_pipeline.fix_applier import FixApplier
 
 # --- FixModule Tests ---
 
@@ -62,7 +62,7 @@ def test_fix_module_other_error():
 def test_fix_applier_file_exists_and_modified(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\n    old_function()\n")
-    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    FixApplier().apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
     assert "new_old_function()" in content
     assert "old_function()" not in content
@@ -70,7 +70,7 @@ def test_fix_applier_file_exists_and_modified(tmpdir):
 def test_fix_applier_file_exists_but_search_block_not_found(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\n    another_function()\n")
-    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    FixApplier().apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
     assert "old_function()" not in content
     assert "new_old_function()" not in content
@@ -78,13 +78,13 @@ def test_fix_applier_file_exists_but_search_block_not_found(tmpdir):
 
 def test_fix_applier_file_does_not_exist(tmpdir):
     file_path = tmpdir.join("new_file.py")
-    apply_fix(str(file_path), "", "# New file content")
+    FixApplier().apply_fix(str(file_path), "", "# New file content")
     assert file_path.read() == "# New file content"
 
 def test_fix_applier_skips_autodev_py(tmpdir):
     file_path = tmpdir.join("autodev.py")
     file_path.write("def some_code():\n    old_function()\n")
-    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    FixApplier().apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
     assert "old_function()" in content
     assert "new_old_function()" not in content
