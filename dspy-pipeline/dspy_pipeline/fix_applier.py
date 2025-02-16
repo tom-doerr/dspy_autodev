@@ -1,29 +1,42 @@
 import os
-from rich.console import Console
+import logging
 
-console = Console()
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class FixApplier:
     def apply_fix(self, filename: str, search_block: str, replace_block: str):
-        # Prevent edits to autodev.py per guidelines from [jetbrains.com](https://www.jetbrains.com/guide/python/tips/move-block/)
-        # and [computercraft.info](https://computercraft.info/wiki/Rename)
+        """
+        Applies a fix by replacing a search block with a replace block in a given file.
+        """
+        # Prevent edits to autodev.py
         if os.path.basename(filename) == "autodev.py":
-            console.print("[red]Skipping modification of autodev.py. Please fix autodev.py manually.[/red]")
+            logging.warning("Skipping modification of autodev.py.")
             return
+
         if os.path.exists(filename):
-            with open(filename, 'r', encoding='utf8') as file:
-                content = file.read()
-            if search_block in content:
-                content = content.replace(search_block, replace_block)
-                with open(filename, 'w', encoding='utf8') as file:
-                    file.write(content)
-                console.print(f"[green]Applied patch to {filename}.[/green]")
-            else:
-                console.print(f"[red]Search block not found in {filename}.[/red]")
-                console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
-                console.print(f"[yellow]Replace block:[/yellow]")
-                console.print(replace_block)
+            try:
+                with open(filename, 'r', encoding='utf8') as file:
+                    content = file.read()
+
+                # Only replace the first occurrence
+                if search_block in content:
+                    content = content.replace(search_block, replace_block, 1)
+
+                    with open(filename, 'w', encoding='utf8') as file:
+                        file.write(content)
+
+                    logging.info(f"Applied patch to {filename}.")
+                else:
+                    logging.warning(f"Search block not found in {filename}.")
+
+            except FileNotFoundError:
+                logging.error(f"File not found: {filename}")
+            except Exception as e:
+                logging.error(f"Error applying fix to {filename}: {e}")
         else:
-            with open(filename, 'w', encoding='utf8') as file:
-                file.write(replace_block)
-            console.print(f"[blue]Created new file {filename}.[/blue]")
+            try:
+                with open(filename, 'w', encoding='utf8') as file:
+                    file.write(replace_block)
+                logging.info(f"Created new file {filename} with initial content.")
+            except Exception as e:
+                logging.error(f"Error creating new file {filename}: {e}")

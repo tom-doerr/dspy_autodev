@@ -16,7 +16,7 @@ def test_gather_code_with_python_files(tmpdir):
     gatherer = CodeGatherer(root_dir=str(tmpdir))
 
     # Gather code with the .py extension
-    code_dict = gatherer.gather_code(extensions=(".py",))
+    code_dict, errors = gatherer.gather_code(extensions=(".py",))
 
     # Assert that the dictionary contains the correct files and content
     assert str(file1) in code_dict
@@ -24,6 +24,7 @@ def test_gather_code_with_python_files(tmpdir):
     assert str(file3) not in code_dict  # Ensure .txt file is ignored
     assert code_dict[str(file1)] == "def hello():\n    print('Hello, world!')\n"
     assert code_dict[str(file2)] == "def goodbye():\n    print('Goodbye!')\n"
+    assert not errors, "No errors should be reported"
 
 def test_gather_code_with_multiple_extensions(tmpdir):
     # Create some dummy files with different extensions
@@ -36,13 +37,14 @@ def test_gather_code_with_multiple_extensions(tmpdir):
     gatherer = CodeGatherer(root_dir=str(tmpdir))
 
     # Gather code with both .py and .txt extensions
-    code_dict = gatherer.gather_code(extensions=(".py", ".txt"))
+    code_dict, errors = gatherer.gather_code(extensions=(".py", ".txt"))
 
     # Assert that the dictionary contains the correct files and content
     assert str(file1) in code_dict
     assert str(file2) in code_dict
     assert code_dict[str(file1)] == "def hello():\n    print('Hello, world!')\n"
     assert code_dict[str(file2)] == "Some text content\n"
+    assert not errors, "No errors should be reported"
 
 def test_gather_code_handles_unreadable_files(tmpdir, caplog):
     # Create a file that cannot be read
@@ -54,7 +56,7 @@ def test_gather_code_handles_unreadable_files(tmpdir, caplog):
     gatherer = CodeGatherer(root_dir=str(tmpdir))
 
     # Gather code, which should trigger an error log
-    code_dict = gatherer.gather_code(extensions=(".py",))
+    code_dict, errors = gatherer.gather_code(extensions=(".py",))
 
     # Assert that the dictionary is empty (or doesn't contain the unreadable file)
     assert str(file1) not in code_dict
@@ -104,17 +106,19 @@ def test_code_gatherer_different_root_dir(tmpdir):
     gatherer = CodeGatherer(root_dir=str(tmpdir))
 
     # Gather code with the .py extension
-    code_dict = gatherer.gather_code(extensions=(".py",))
+    code_dict, errors = gatherer.gather_code(extensions=(".py",))
 
     # The file should NOT be found, as the root dir is the parent
     assert str(file1) not in code_dict
+    assert not errors, "No errors should be reported"
 
     # Initialize CodeGatherer with the subdirectory
     gatherer = CodeGatherer(root_dir=str(subdir))
 
     # Gather code with the .py extension
-    code_dict = gatherer.gather_code(extensions=(".py",))
+    code_dict, errors = gatherer.gather_code(extensions=(".py",))
 
     # The file SHOULD be found
     assert str(file1) in code_dict
     assert code_dict[str(file1)] == "def hello():\n    print('Hello, world!')\n"
+    assert not errors, "No errors should be reported"
