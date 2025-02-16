@@ -15,3 +15,15 @@ class AutodevRunner:
             console.print("[yellow]stderr:[/yellow]")
             console.print(result.stderr)
         return result.returncode, result.stdout, result.stderr
+
+    def get_autodev_source(self):
+        """
+        Reads the contents of autodev.py and returns it as a string.
+        """
+        try:
+            with open("autodev.py", "r", encoding="utf-8") as f:
+                return f.read()
+        except FileNotFoundError:
+            return "autodev.py not found."
+        except Exception as e:
+            return f"Error reading autodev.py: {e}"

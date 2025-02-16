@@ -8,7 +8,7 @@ class MainLoop:
     def __init__(self):
         self.autodev_runner = AutodevRunner()
         self.code_gatherer = CodeGatherer()
-        self.fix_instruction_generator = FixInstructionGenerator() # No need to pass the LM here
+        self.fix_instruction_generator = FixInstructionGenerator()
         self.fix_applier = FixApplier()
 
     def run(self):

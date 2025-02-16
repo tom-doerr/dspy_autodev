@@ -13,30 +13,38 @@ class CodeGatherer:
 
     def gather_code(self, extensions=(".py",)):
         """
-        Gathers code from files with the specified extensions within the root directory
-        (non-recursively).
+        Gathers code from all files with the specified extensions within the root directory.
+
+        Args:
+            extensions (tuple): A tuple of file extensions to include in the code gathering process.
+                                 Defaults to Python files (".py").
 
         Returns:
-            tuple: (code_dict, errors)
-                code_dict is a dictionary where keys are file paths and values are file contents.
-                errors is a list of error messages.
+            dict: A dictionary where keys are file paths and values are the corresponding code content.
         """
         code_dict = {}
         errors = []
-        try:
-            for file in os.listdir(self.root_dir):
-                filepath = os.path.join(self.root_dir, file)
-                if os.path.isfile(filepath) and file.endswith(extensions):
+        for root, _, files in os.walk(self.root_dir):
+            for file in files:
+                if file.endswith(extensions):
+                    filepath = os.path.join(root, file)
                     try:
-                        with open(filepath, "r", encoding="utf8") as f:
+                        with open(filepath, "r", encoding="utf-8") as f:
                             code_dict[filepath] = f.read()
+                    except UnicodeDecodeError:
+                        try:
+                            with open(filepath, "r", encoding="latin-1") as f:
+                                code_dict[filepath] = f.read()
+                            logging.warning(f"Successfully read {filepath} with latin-1 encoding.")
+                        except Exception as e:
+                            error_message = f"Error reading file {filepath}: {e}"
+                            logging.error(error_message)
+                            errors.append(error_message)
                     except Exception as e:
-                        logging.error(f"Error reading file {filepath}: {e}")
-                        errors.append(str(e))
-            return code_dict, errors
-        except Exception as e:
-            errors.append(str(e))
-            return code_dict, errors
+                        error_message = f"Error reading file {filepath}: {e}"
+                        logging.error(error_message)
+                        errors.append(error_message)
+        return code_dict, errors
 
     def get_code_for_file(self, filename):
         """
