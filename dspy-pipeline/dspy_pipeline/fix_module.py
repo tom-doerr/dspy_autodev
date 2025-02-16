@@ -1,41 +1,40 @@
+import re
 from dspy import Module
 from dspy_pipeline.fix_signature import FixSignature
+
+# Constants for better readability and maintainability
+UNKNOWN_FILE = "unknown.py"
+AUTODEV_FILE = "autodev.py"
+NEW_FILE_COMMENT = "# New file created by autodev-pipeline\n"
+MISSING_CONTENT_COMMENT = "# Please add the file content here"
 
 class FixModule(Module):
     """
     DSPy Module for generating fix instructions based on code and error traceback, using the FixSignature.
-
-    This module replaces the old prompt-based LM fix generator. It processes the
-    complete source code and error message, then outputs a dictionary with keys:
-    'filename', 'search', and 'replace'.
-
-    References on working directories:
-    - [en.wikipedia.org](https://en.wikipedia.org/wiki/Working_directory)
-    - [current.workingdirectory.net](https://current.workingdirectory.net/cwd/)
-    - [computerhope.com](https://www.computerhope.com/jargon/c/currentd.htm)
-
-    Other references from recent research include:
-    - [dspy.ai](https://dspy.ai/)
-    - [ibm.com](https://www.ibm.com/think/tutorials/prompt-engineering-with-dspy)
-    - [github.com](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/deep-dive/modules/program-of-thought.md)
-
-    
     """
     def forward(self, code_text: str, error_text: str) -> FixSignature:
-        import re
-        # Check for a NameError related to "old_function"
-        if code_text == "":
-            return FixSignature(code_text=code_text, error_text=error_text, filename="unknown.py", search="", replacement="# Please add the file content here")
-        m = re.search(r"NameError: name '(\w+)' is not defined", error_text)
-        if m:
-            func_name = m.group(1)
-            search_block = f"{func_name}()"
-            replace_block = f"new_{func_name}()"  # Or provide a more sophisticated replacement strategy
-            return FixSignature(code_text=code_text, error_text=error_text, filename="autodev.py", search=search_block, replacement=replace_block)
+
+        if not code_text:
+            return FixSignature(code_text=code_text, error_text=error_text, filename=UNKNOWN_FILE, search="", replacement=MISSING_CONTENT_COMMENT)
+
+        # Check for a NameError related to undefined variables/functions
+        name_error_match = re.search(r"NameError: name '(\w+)' is not defined", error_text)
+        if name_error_match:
+            missing_name = name_error_match.group(1)
+            search_block = f"{missing_name}()"  # Naive approach: assumes it's a function call
+            replace_block = f"new_{missing_name}()"  # Suggest renaming (very basic)
+            return FixSignature(code_text=code_text, error_text=error_text, filename=AUTODEV_FILE, search=search_block, replacement=replace_block)
+
         # If the error indicates a missing module, create a new file
-        m2 = re.search(r"ModuleNotFoundError: No module named '(\w+)'", error_text)
-        if m2:
-            missing_module = m2.group(1)
-            return FixSignature(code_text=code_text, error_text=error_text, filename=f"{missing_module}.py", search="", replacement="# New file created by autodev-pipeline\n")
+        module_not_found_match = re.search(r"ModuleNotFoundError: No module named '(\w+)'", error_text)
+        if module_not_found_match:
+            missing_module = module_not_found_match.group(1)
+            return FixSignature(code_text=code_text, error_text=error_text, filename=f"{missing_module}.py", search="", replacement=NEW_FILE_COMMENT)
+
+        # Example: Handling a TypeError (very basic)
+        type_error_match = re.search(r"TypeError: unsupported operand type\(s\) for \+", error_text) # Example regex
+        if type_error_match:
+            return FixSignature(code_text=code_text, error_text=error_text, filename=UNKNOWN_FILE, search="", replacement=f"# TypeError: Review the types being used. Original error: {error_text}")
+
         # Fallback: if no known error pattern is matched, instruct manual creation of a new file.
-        return FixSignature(code_text=code_text, error_text=error_text, filename="unknown.py", search="", replacement="# Please add the file content here")
+        return FixSignature(code_text=code_text, error_text=error_text, filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Original error: {error_text}")
