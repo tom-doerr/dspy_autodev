@@ -28,23 +28,11 @@ class FixModule(Module):
         if m:
             func_name = m.group(1)
             if func_name == "old_function":
-                return {
-                    "filename": "autodev.py",
-                    "search": "old_function()",
-                    "replace": "new_function()"
-                }
+                return FixSignature(filename="autodev.py", search="old_function()", replace="new_function()")
         # Check if the error indicates a missing file, e.g., FileNotFoundError pattern
         m2 = re.search(r"No such file or directory: '([^']+)'", error_text)
         if m2:
             missing_file = m2.group(1)
-            return {
-                "filename": missing_file,
-                "search": "",
-                "replace": "# New file created by autodev-pipeline\n"
-            }
+            return FixSignature(filename=missing_file, search="", replace="# New file created by autodev-pipeline\n")
         # Fallback: if no known error pattern is matched, instruct manual creation of a new file.
-        return {
-            "filename": "unknown.py",
-            "search": "",
-            "replace": "# Please add the file content here"
-        }
+        return FixSignature(filename="unknown.py", search="", replace="# Please add the file content here")
