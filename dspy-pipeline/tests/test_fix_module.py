@@ -10,9 +10,9 @@ def test_fix_module_for_old_function():
         "NameError: name 'old_function' is not defined"
     )
     fix = fix_module.forward(code_text, error_text)
-    assert fix["filename"] == "autodev.py"
-    assert fix["search"] == "old_function()"
-    assert fix["replace"] == "new_function()"
+    assert fix.filename == "autodev.py"
+    assert fix.search == "old_function()"
+    assert fix.replace == "new_function()"
 
 def test_fix_module_no_fix():
     # This test ensures that if the error does not match any recognized pattern,
@@ -31,6 +31,6 @@ def test_fix_module_no_fix():
         "NameError: name 'some_function' is not defined"
     )
     fix = fix_module.forward(code_text, error_text)
-    assert fix["filename"] == "unknown.py"
-    assert fix["search"] == ""
-    assert fix["replace"] == "# Please add the file content here"
+    assert fix.filename == "unknown.py"
+    assert fix.search == ""
+    assert fix.replace == "# Please add the file content here"
