@@ -9,6 +9,7 @@ except ImportError:
     exit(1)
 console = Console()
 import sys
+import os
 
 def run_autodev():
     result = subprocess.run(
@@ -108,8 +109,5 @@ def main_loop():
 # This signature is based on best practices as discussed in [usecodeblocks.com](https://usecodeblocks.com/) and [aider.chat](https://aider.chat/docs/usage.html).
 
 def main():
-    helper_function()
-    main_loop()
-
-if __name__ == '__main__':
-    main()
+    lm = dspy.LM('openrouter/google/gemini-2.0-flash-001', api_key=os.environ["OPENROUTER_API_KEY"], temperature=1.5, caching=False)
+    dspy.configure(lm=lm)
