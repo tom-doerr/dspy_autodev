@@ -29,9 +29,14 @@ class MainLoop:
                             autodev_source = f.read()
                     except Exception as e:
                         autodev_source = "Could not read autodev.py: " + str(e)
-                    code_contents = self.code_gatherer.gather_code() + "\nautodev.py:\n" + autodev_source
+                    code_data, _ = self.code_gatherer.gather_code()
+                    code_contents = "\n".join([f"{filepath}:\n{code}" for filepath, code in code_data.items()]) + "\nautodev.py:\n" + autodev_source
                     error_message = stderr if stderr.strip() else stdout
                     filename, search_block, replace_block = self.fix_instruction_generator.get_fix_instructions(code_contents, error_message)
+                    console.print("[blue]Code Contents:[/blue]")
+                    console.print(code_contents)
+                    console.print("[blue]Error Message:[/blue]")
+                    console.print(error_message)
                     console.print("[blue]Fix instruction generated:[/blue]")
                     console.print(f"Filename: {filename}")
                     console.print(f"Search block: {search_block}")
