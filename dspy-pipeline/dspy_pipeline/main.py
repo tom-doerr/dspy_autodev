@@ -20,7 +20,7 @@ def gather_code_contents():
             if f in ['LICENSE', '.gitignore']:
                 continue
             path = os.path.join(root, f)
-            with open(path, 'r', encoding='utf8') as file:
+            with open(path, 'r', encoding='utf8', errors='replace') as file:
                 combined += f"{path}:\n" + file.read() + "\n\n"
     return combined
 
