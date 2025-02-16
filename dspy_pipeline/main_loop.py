@@ -38,10 +38,10 @@ class MainLoop:
                 logging.info(f"Applied fix to {fix_instructions.filename}")
 
             except Exception as e:
-                logging.error(f"Error generating or applying fix: {e}")
+                logging.exception(f"Error generating or applying fix. Details: {e}")
 
 
         except FileNotFoundError as e:
             logging.error(f"File not found: {e}")
         except Exception as e:
-            logging.error(f"An unexpected error occurred: {e}")
+            logging.exception(f"An unexpected error occurred: {e}")
