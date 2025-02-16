@@ -1,0 +1,2 @@
+[tool.poetry.scripts]
+dpsy-pipeline = "dpsy_pipeline.main:main"
