@@ -36,7 +36,6 @@ def gather_code_contents():
     return combined
 
 def get_fix_instructions(code_text, error_text):
-def get_fix_instructions(code_text, error_text):
     from dspy_pipeline.fix_module import FixModule
     fix_module = FixModule()
     fix_result = fix_module.forward(code_text, error_text)
