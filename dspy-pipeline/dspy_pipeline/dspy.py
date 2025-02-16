@@ -4,6 +4,7 @@ class LM:
 
     def generate(self, prompt):
         # This is a dummy implementation.
+        # Using Gemini Flash model.
         # In a real implementation, this method would use the model to generate fix instructions.
         return (
             "Filename: dummy.py\n"
