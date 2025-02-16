@@ -104,7 +104,12 @@ def main_loop():
             retcode, stdout, stderr = run_autodev()
             if retcode != 0 or stderr.strip():
                 print("Error encountered, running fixer.")
-                code_contents = gather_code_contents()
+                try:
+                    with open('autodev.py', 'r', encoding='utf8') as f:
+                        autodev_source = f.read()
+                except Exception as e:
+                    autodev_source = "Could not read autodev.py: " + str(e)
+                code_contents = gather_code_contents() + "\nautodev.py:\n" + autodev_source
                 error_message = stderr if stderr.strip() else stdout
                 filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
                 if filename is None:
