@@ -16,6 +16,8 @@ class FixInstruction(Signature):
     This signature is designed to capture all inputs and outputs for the fix pipeline.
     For more details on multi-field signatures, see [developer.bitcoin.org](https://developer.bitcoin.org/devguide/transactions.html)
     and [docs.solana.com](https://docs.solana.com/developing/programming-model/transactions).
+    
+    Additionally, note that this signature encapsulates the entire process of automated fix generation by providing comprehensive inputs (code and error details) and outputs (filename, search, and replace). This enables precise identification of the file to modify or create, the section of code to update, and the new content to be applied. For best practices regarding code block formatting, see [micro-manager.org](https://micro-manager.org/editing/code) and [usecodeblocks.com](https://usecodeblocks.com/). For guidelines on displaying code examples, refer to [documentation.help](https://documentation.help/Sphinx/code.html).
     """
     code: str = InputField(desc="Combined source code from all files, including autodev.py.")
     error: str = InputField(desc="Error message and traceback from autodev.py execution.")
