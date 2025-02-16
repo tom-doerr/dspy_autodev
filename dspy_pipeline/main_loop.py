@@ -1,4 +1,7 @@
-from dspy_pipeline.code_gatherer import CodeGatherer  # Add this import
+from dspy_pipeline.code_gatherer import CodeGatherer
+from dspy_pipeline.autodev_runner import AutodevRunner  # Add this import
+from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator  # Add this import
+
 
 class MainLoop:
     def __init__(self):
