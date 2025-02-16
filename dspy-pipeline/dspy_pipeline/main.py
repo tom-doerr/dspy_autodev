@@ -48,6 +48,7 @@ def get_fix_instructions(code_text, error_text):
         "<replace block>\n"
         ">>>>>>> REPLACE\n\n"
         "Ensure that your fix accounts for the full context and refers to best practices as outlined in the DSPy Cheatsheet [dspy.ai](https://dspy.ai/cheatsheet/) and additional guidelines from [dspy-docs.vercel.app](https://dspy-docs.vercel.app/api/category/modules).\n\n"
+        "The code input includes the complete source of autodev.py, preceded by the marker 'autodev.py:'.\n"
         "Code:\n" + code_text + "\n\nError Traceback:\n" + error_text + "\n"
     )
     fix_response = lm.generate(prompt)
