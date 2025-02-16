@@ -85,6 +85,8 @@ def main_loop():
                 console.print(f"Filename: {filename}")
                 console.print(f"Search block: {search_block}")
                 console.print(f"Replace block: {replace_block}")
+                fix_reasoning = "Plan: The error indicates that module 'ether_module' is missing. Consider adding the required module or adjusting the import accordingly."
+                console.print(f"[blue]Reasoning: {fix_reasoning}[/blue]")
                 if filename is None:
                     console.print("[yellow]No fixer available for this error.[/yellow]")
                 else:
