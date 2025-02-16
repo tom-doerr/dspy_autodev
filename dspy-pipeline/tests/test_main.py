@@ -8,6 +8,7 @@ def test_apply_fix_non_existing_file(tmp_path):
     file_path = tmp_path / "new_autodev.py"
     if file_path.exists():
         file_path.unlink()
-    apply_fix(str(file_path), "foo", "bar")
+    apply_fix(str(file_path), "", "bar")
+    assert file_path.exists()
     updated_content = file_path.read_text()
     assert updated_content == "bar"
