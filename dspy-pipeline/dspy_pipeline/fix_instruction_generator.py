@@ -27,11 +27,23 @@ class FixInstructionGenerator(dspy.Module):
         try:
             # Use the DSPy Predict module to generate fix instructions
             prediction = self.predictor(code=code, error=error)
-            return FixSignature(filename=prediction.filename, search=prediction.search, replacement=prediction.replacement)
+            return FixSignature(
+                code_text=code,
+                error_text=error,
+                filename=prediction.filename,
+                search=prediction.search,
+                replacement=prediction.replacement
+            )
 
         except Exception as e:
             logging.exception(f"Error generating fix instructions: {e}")
-            return FixSignature(filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}")
+            return FixSignature(
+                code_text=code,
+                error_text=error,
+                filename=UNKNOWN_FILE,
+                search="",
+                replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}"
+            )
 
     def get_fix_instructions(self, code: str, error: str) -> FixSignature:
         return self.forward(code, error)
