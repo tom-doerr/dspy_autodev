@@ -10,7 +10,26 @@ class MainLoop:
         self.fix_instruction_generator = FixInstructionGenerator()
 
     def run(self):
-        # ... other code ...
-        code_data = self.code_gatherer.gather_code()
-        # Now you can work with the code_data dictionary, which contains file paths and code.
-        # ... more code ...
+        """
+        Runs the main loop of the autodev pipeline.
+        """
+        try:
+            # Run autodev.py and capture its output
+            autodev_result = self.autodev_runner.run_autodev()
+            autodev_source = self.autodev_runner.get_autodev_source()
+
+            # Gather code from the project
+            code_data = self.code_gatherer.gather_code()
+            code_contents = "\n".join([f"{filepath}:\n{code}" for filepath, code in code_data.items()])
+
+            # Combine code contents and autodev.py source
+            combined_code = code_contents + "\nautodev.py:\n" + autodev_source
+
+            # Generate fix instructions from the error and code
+            fix_instructions = self.fix_instruction_generator.get_fix_instructions(combined_code, autodev_result.stderr)
+
+            # Print the fix instructions
+            print(fix_instructions)
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
