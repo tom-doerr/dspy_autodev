@@ -2,7 +2,7 @@
 name = "dspy-pipeline"
 version = "0.1.0"
 description = "Dspy pipeline package"
-authors = ["Your Name <your.email@example.com>"]
+authors = ["Tom Dörr <tomdoerr96@gmail.com>"]
 
 [tool.poetry.scripts]
 dspy-pipeline = "dspy_pipeline.main:main"
