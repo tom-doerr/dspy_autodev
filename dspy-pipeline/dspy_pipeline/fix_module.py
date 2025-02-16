@@ -18,12 +18,7 @@ class FixModule(Module):
     - [ibm.com](https://www.ibm.com/think/tutorials/prompt-engineering-with-dspy)
     - [github.com](https://github.com/stanfordnlp/dspy/blob/main/docs/docs/deep-dive/modules/program-of-thought.md)
 
-    Additional references:
-    - [secure.phabricator.com](https://secure.phabricator.com/w/prioritization/)
-    - [secure.phabricator.com](https://secure.phabricator.com/w/consulting/)
-    - [github.com](https://github.com/dave/dst)
-    - [sourcery.ai](https://sourcery.ai/)
-    - [support.github.com](https://support.github.com/features/sponsors)
+    
     """
     def forward(self, code_text: str, error_text: str):
         import re
