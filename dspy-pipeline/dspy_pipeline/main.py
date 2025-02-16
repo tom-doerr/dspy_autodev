@@ -37,6 +37,12 @@ def gather_code_contents():
 
 def get_fix_instructions(code_text, error_text):
     # Use dspy.LM to generate fix instructions using model openrouter/google/gemini-2.0-flash-001.
+    # Recommended best practices for file moves and renames can be referred from:
+    # [git-scm.com](https://git-scm.com/docs/git-mv),
+    # [onivim.github.io](https://onivim.github.io/docs/using-onivim/editing-and-deleting),
+    # [dashdash.io](https://dashdash.io/1/mv),
+    # [computercraft.info](https://computercraft.info/wiki/Rename), and
+    # [computercraft.info](https://computercraft.info/wiki/Fs.move)
     from dspy import LM
     lm = LM(model="openrouter/google/gemini-2.0-flash-001")
     prompt = (
