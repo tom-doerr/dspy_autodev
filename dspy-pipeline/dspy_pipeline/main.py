@@ -31,11 +31,8 @@ def gather_code_contents():
     return combined
 
 def get_fix_instructions(code_text, error_text):
-    # Dummy fixer: replace the first occurrence of "foo" with "bar" in autodev.py.
-    filename = "autodev.py"
-    search_block = "foo"
-    replace_block = "bar"
-    return filename, search_block, replace_block
+    # No fixer applied since autodev.py is not used in this pipeline.
+    return None, None, None
 
 def apply_fix(filename, search_block, replace_block):
     if os.path.exists(filename):
@@ -65,7 +62,11 @@ def main_loop():
                 code_contents = gather_code_contents()
                 error_message = stderr if stderr.strip() else stdout
                 filename, search_block, replace_block = get_fix_instructions(code_contents, error_message)
-                apply_fix(filename, search_block, replace_block)
+                if filename is None:
+                    console.print("[yellow]No fixer available for this error. Sleeping for 5 seconds...[/yellow]")
+                else:
+                    apply_fix(filename, search_block, replace_block)
+                time.sleep(5)
         else:
             print("No errors found.")
         time.sleep(5)
