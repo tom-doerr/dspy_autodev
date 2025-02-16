@@ -2,6 +2,9 @@ import os
 import subprocess
 import time
 from dspy_pipeline.utils import helper_function
+from rich.console import Console
+
+console = Console()
 
 def run_autodev():
     result = subprocess.run(
@@ -39,13 +42,13 @@ def apply_fix(filename, search_block, replace_block):
             content = content.replace(search_block, replace_block, 1)
             with open(filename, 'w', encoding='utf8') as file:
                 file.write(content)
-            print(f"Applied patch to {filename}.")
+            console.print(f"[green]Applied patch to {filename}.[/green]")
         else:
-            print(f"Search block not found in {filename}.")
+            console.print(f"[red]Search block not found in {filename}.[/red]")
     else:
         with open(filename, 'w', encoding='utf8') as file:
             file.write(replace_block)
-        print(f"Created new file {filename}.")
+        console.print(f"[blue]Created new file {filename}.[/blue]")
 
 def main_loop():
     last_mod_time = os.path.getmtime('autodev.py') if os.path.exists('autodev.py') else 0
