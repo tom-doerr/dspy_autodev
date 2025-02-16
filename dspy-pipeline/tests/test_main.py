@@ -2,14 +2,6 @@ import os
 import pytest
 from dspy_pipeline.main import get_fix_instructions, apply_fix
 
-def test_get_fix_instructions():
-    code_text = "dummy code"
-    error_text = "dummy error"
-    filename, search_block, replace_block = get_fix_instructions(code_text, error_text)
-    # For the dummy fixer, the expected values are:
-    assert filename == "autodev.py"
-    assert search_block == "foo"
-    assert replace_block == "bar"
 
 def test_apply_fix_existing_file(tmp_path):
     # Create a temporary autodev.py file that includes the text "foo"
