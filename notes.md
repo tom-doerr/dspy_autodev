@@ -11,3 +11,6 @@
   - [docs.python.org](https://docs.python.org/3/tutorial/interpreter.html)
   - [wingware.com](https://www.wingware.com/doc/ai/context)
   - [craftquest.io](https://craftquest.io/articles/what-is-the-working-tree-in-git)
+
+  ### DSPy Inference
+  Based on best practices from [usecodeblocks.com](https://usecodeblocks.com/), [peps.python.org](https://peps.python.org/pep-0008/), and [aider.chat](https://aider.chat/docs/usage.html), the DSPy inference pipeline is configured to work reliably. Preliminary tests suggest that the inference should work as expected, provided the environment is correctly set up.
