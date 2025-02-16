@@ -35,8 +35,46 @@ def gather_code_contents():
     return combined
 
 def get_fix_instructions(code_text, error_text):
-    # No fixer applied since autodev.py is not used in this pipeline.
-    return None, None, None
+    # Use dspy.LM to generate fix instructions using model openrouter/google/gemini-2.0-flash-001.
+    from dspy import LM
+    lm = LM(model="openrouter/google/gemini-2.0-flash-001")
+    prompt = (
+        "Given the following code and error, generate fix instructions in the format:\n"
+        "Filename: <filename>\n"
+        "<<<<<<< SEARCH\n"
+        "<search block>\n"
+        "=======\n"
+        "<replace block>\n"
+        ">>>>>>> REPLACE\n\n"
+        "Code:\n" + code_text + "\n\nError:\n" + error_text + "\n"
+    )
+    fix_response = lm.generate(prompt)
+    # For demonstration purposes, parse a dummy response.
+    # The response must contain the expected format.
+    lines = fix_response.splitlines()
+    filename = None
+    search_block = ""
+    replace_block = ""
+    for i, line in enumerate(lines):
+        if line.startswith("Filename:"):
+            filename = line.split(":", 1)[1].strip()
+        if line.strip() == "<<<<<<< SEARCH":
+            j = i + 1
+            search_lines = []
+            while j < len(lines) and lines[j].strip() != "=======":
+                search_lines.append(lines[j])
+                j += 1
+            search_block = "\n".join(search_lines)
+        if line.strip() == "=======":
+            j = i + 1
+            replace_lines = []
+            while j < len(lines) and lines[j].strip() != ">>>>>>> REPLACE":
+                replace_lines.append(lines[j])
+                j += 1
+            replace_block = "\n".join(replace_lines)
+    if filename is None:
+        return None, None, None
+    return filename, search_block, replace_block
 
 def apply_fix(filename, search_block, replace_block):
     if filename == "autodev.py":
