@@ -19,9 +19,11 @@ class FixApplier:
                 with open(filename, 'r', encoding='utf8') as file:
                     content = file.read()
 
-                # Only replace the first occurrence
-                if search_block in content:
-                    content = content.replace(search_block, replace_block, 1)
+                # Use regex matching ignoring surrounding whitespace differences
+                import re
+                pattern = re.compile(r'\s*' + re.escape(search_block.strip()) + r'\s*')
+                if re.search(pattern, content):
+                    content = re.sub(pattern, replace_block, content, count=1)
 
                     with open(filename, 'w', encoding='utf8') as file:
                         file.write(content)
