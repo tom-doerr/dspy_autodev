@@ -42,6 +42,8 @@ def get_fix_instructions(code_text, error_text):
     return fix_result["filename"], fix_result["search"], fix_result["replace"]
 
 def apply_fix(filename, search_block, replace_block):
+    # Prevent edits to autodev.py per guidelines from [jetbrains.com](https://www.jetbrains.com/guide/python/tips/move-block/) 
+    # and [computercraft.info](https://computercraft.info/wiki/Rename)
     if filename == "autodev.py":
         console.print("[red]Skipping modification of autodev.py. Please fix autodev.py manually.[/red]")
         return
