@@ -73,7 +73,7 @@ def test_fix_applier_file_exists_and_modified_windows_line_endings(tmpdir):
     apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
     assert "new_old_function()" in content
-    assert "old_function()" not in content.strip()
+    assert "old_function()" not in content
 
 def test_fix_applier_file_exists_but_search_block_not_found(tmpdir):
     file_path = tmpdir.join("test_file.py")
@@ -96,6 +96,37 @@ def test_fix_applier_skips_autodev_py(tmpdir):
     content = file_path.read()
     assert "old_function()" in content
     assert "new_old_function()" not in content
+
+def test_fix_applier_multiple_occurrences(tmpdir):
+    file_path = tmpdir.join("test_file.py")
+    file_path.write("def some_code():\n    old_function()\n    old_function()\n")
+    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    content = file_path.read()
+    assert content.count("new_old_function()") == 1
+    assert content.count("old_function()") == 1
+
+def test_fix_applier_leading_whitespace(tmpdir):
+    file_path = tmpdir.join("test_file.py")
+    file_path.write("def some_code():\n    old_function()\n")
+    apply_fix(str(file_path), "   old_function()", "new_old_function()")
+    content = file_path.read()
+    assert "old_function()" in content
+    assert "new_old_function()" not in content
+
+def test_fix_applier_trailing_whitespace(tmpdir):
+    file_path = tmpdir.join("test_file.py")
+    file_path.write("def some_code():\n    old_function()\n")
+    apply_fix(str(file_path), "old_function()   ", "new_old_function()")
+    content = file_path.read()
+    assert "old_function()" in content
+    assert "new_old_function()" not in content
+
+def test_fix_applier_empty_file(tmpdir):
+    file_path = tmpdir.join("test_file.py")
+    file_path.write("")
+    apply_fix(str(file_path), "old_function()", "new_old_function()")
+    content = file_path.read()
+    assert content == ""
 
 # --- Edge Case Tests ---
 
