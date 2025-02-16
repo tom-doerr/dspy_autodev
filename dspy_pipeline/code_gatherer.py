@@ -25,6 +25,7 @@ class CodeGatherer:
             dict: A dictionary where keys are file paths and values are the corresponding code content.
         """
         code_dict = {}
+        errors = []
         for root, _, files in os.walk(self.root_dir):
             for file in files:
                 if file.endswith(extensions):
@@ -34,7 +35,8 @@ class CodeGatherer:
                             code_dict[filepath] = f.read()
                     except Exception as e:
                         logging.error(f"Error reading file {filepath}: {e}")
-        return code_dict
+                        errors.append(str(e))  # Append the error message
+        return code_dict, errors  # Return both code_dict and errors
 
     def get_code_for_file(self, filename):
         """
