@@ -8,6 +8,7 @@ except ImportError:
     print("Rich module not installed. Please run 'poetry install' in the dspy-pipeline directory.")
     exit(1)
 console = Console()
+import sys
 
 def run_autodev():
     result = subprocess.run(
@@ -129,7 +130,27 @@ def main_loop():
     except KeyboardInterrupt:
         print("Exiting main loop.")
 
+# New function to print the DSPy signature for fix instructions.
+# This signature is based on best practices as discussed in [usecodeblocks.com](https://usecodeblocks.com/) and [aider.chat](https://aider.chat/docs/usage.html).
+def print_dspy_signature():
+    signature = (
+        "Given the following code, error message, and error traceback, generate fix instructions in the format:\n"
+        "Filename: <filename>\n"
+        "<<<<<<< SEARCH\n"
+        "<search block>\n"
+        "=======\n"
+        "<replace block>\n"
+        ">>>>>>> REPLACE\n\n"
+        "Ensure that the patch addresses both the error details and its traceback.\n\n"
+        "Code:\n"
+        "... (truncated for brevity)\n"
+    )
+    print(signature)
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "--signature":
+        print_dspy_signature()
+        sys.exit(0)
     helper_function()
     main_loop()
 
