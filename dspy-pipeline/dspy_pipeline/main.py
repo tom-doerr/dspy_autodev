@@ -2,8 +2,11 @@ import os
 import subprocess
 import time
 from dspy_pipeline.utils import helper_function
-from rich.console import Console
-
+try:
+    from rich.console import Console
+except ImportError:
+    print("Rich module not installed. Please run 'poetry install' in the dspy-pipeline directory.")
+    exit(1)
 console = Console()
 
 def run_autodev():
