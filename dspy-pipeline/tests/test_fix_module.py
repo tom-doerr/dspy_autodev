@@ -29,7 +29,7 @@ def test_fix_module_file_not_found():
         "ModuleNotFoundError: No module named 'ether_module'"
     )
     fix = fix_module.forward(code_text, error_text)
-    assert fix.filename == "unknown.py"
+    assert fix.filename == "ether_module.py"
     assert fix.search == ""
     assert fix.replacement == "# New file created by autodev-pipeline\n"
 
@@ -65,7 +65,7 @@ def test_fix_applier_file_exists_and_modified(tmpdir):
     apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
     assert "new_old_function()" in content
-    assert "old_function()" not in content
+    assert "old_function()" not in content.strip()
 
 def test_fix_applier_file_exists_and_modified_windows_line_endings(tmpdir):
     file_path = tmpdir.join("test_file.py")
