@@ -54,7 +54,6 @@ class MainLoop:
 
         except KeyboardInterrupt:
             print("Exiting main loop.")
-``````
 
 dspy-pipeline/dspy_pipeline/main.py
 ````python
