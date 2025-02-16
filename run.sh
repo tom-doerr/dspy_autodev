@@ -15,7 +15,7 @@ echo "Uninstalling previous version (if any)..."
 pip uninstall -y autodev-pipeline || true
 
 echo "Installing package globally for current user..."
-pip install --user --upgrade dist/autodev_pipeline-0.1.1-py3-none-any.whl
+pip install --user --upgrade dist/autodev_pipeline-0.1.2-py3-none-any.whl
 
 echo "Running CLI command..."
 audev

@@ -8,9 +8,6 @@ DSPY_PIPELINE_DIR="dspy-pipeline"
 cd "$DSPY_PIPELINE_DIR" || { echo "Failed to change directory to dspy-pipeline"; exit 1; }
 poetry install
 
-# Install dependencies using poetry
-poetry install
-
 # Build the project
 echo "Building project..."
 poetry build
