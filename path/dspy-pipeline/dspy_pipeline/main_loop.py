@@ -33,7 +33,8 @@ class MainLoop:
                     code_contents = "\n".join([f"{filepath}:\n{code}" for filepath, code in code_data.items()])
                     combined_code = code_contents + "\nautodev.py:\n" + autodev_source
                     error_message = stderr if stderr.strip() else stdout
-                    filename, search_block, replace_block = self.fix_instruction_generator.get_fix_instructions(code_contents, error_message)
+                    fix_sig = self.fix_instruction_generator.get_fix_instructions(code_contents, error_message)
+                    filename, search_block, replace_block = fix_sig.filename, fix_sig.search, fix_sig.replacement
                     console.print("[blue]Code Contents:[/blue]")
                     console.print(code_contents)
                     console.print("[blue]Error Message:[/blue]")
