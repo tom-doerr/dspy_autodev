@@ -42,11 +42,6 @@ class FixApplier:
                         file.write(content)
    
                     console.print(f"[green]Applied patch to {filename}.[/green]")
-                else:
-                    console.print(f"[red]Search block not found in {filename}.[/red]")
-                    console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
-                    console.print(f"[yellow]Replace block:[/yellow]")
-                    console.print(replace_block)
 
             except FileNotFoundError:
                 logging.error(f"File not found: {filename}")
