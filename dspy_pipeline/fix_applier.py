@@ -20,13 +20,15 @@ class FixApplier:
                 with open(filename, 'r', encoding='utf8') as file:
                     content = file.read()
 
-                # Only replace the first occurrence
-                if search_block in content:
-                    content = content.replace(search_block, replace_block, 1)
-
+                import re
+                # Build a pattern that ignores surrounding whitespace differences.
+                pattern = re.compile(r'\s*' + re.escape(search_block.strip()) + r'\s*')
+                if re.search(pattern, content):
+                    content = re.sub(pattern, replace_block, content, count=1)
+   
                     with open(filename, 'w', encoding='utf8') as file:
                         file.write(content)
-
+   
                     console.print(f"[green]Applied patch to {filename}.[/green]")
                 else:
                     console.print(f"[red]Search block not found in {filename}.[/red]")
