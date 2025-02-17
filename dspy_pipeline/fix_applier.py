@@ -21,10 +21,22 @@ class FixApplier:
                     content = file.read()
 
                 import re
-                # Build a pattern that ignores surrounding whitespace differences.
-                pattern = re.compile(r'\s*' + re.escape(search_block.strip()) + r'\s*')
-                if re.search(pattern, content):
-                    content = re.sub(pattern, replace_block, content, count=1)
+                search_clean = search_block.strip()
+                # First, try an exact match replacement.
+                if search_clean in content:
+                    content = content.replace(search_clean, replace_block, 1)
+                else:
+                    # Build a pattern that captures leading and trailing whitespace.
+                    pattern = re.compile(r'(\s*)' + re.escape(search_clean) + r'(\s*)')
+                    if re.search(pattern, content):
+                        # Replace while preserving the surrounding whitespace.
+                        content = re.sub(pattern, lambda m: m.group(1) + replace_block + m.group(2), content, count=1)
+                    else:
+                        console.print(f"[red]Search block not found in {filename}.[/red]")
+                        console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
+                        console.print(f"[yellow]Replace block:[/yellow]")
+                        console.print(replace_block)
+                        return
    
                     with open(filename, 'w', encoding='utf8') as file:
                         file.write(content)
