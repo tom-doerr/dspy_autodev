@@ -15,7 +15,9 @@ class MainLoop:
         """
         Runs the main loop of the autodev pipeline.
         """
-        try:
+        count = 0
+        while True:
+            try:
             # Run autodev.py and capture its output
             autodev_result = self.autodev_runner.run_autodev()
             autodev_source = self.autodev_runner.get_autodev_source()
@@ -43,3 +45,8 @@ class MainLoop:
             logging.error(f"File not found: {e}")
         except Exception as e:
             logging.exception(f"An unexpected error occurred: {e}")
+
+        time.sleep(1)
+        count += 1
+        if count >= 1:
+            raise KeyboardInterrupt
