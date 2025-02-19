@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 from dspy_pipeline.main_loop import MainLoop
 from dspy_pipeline.fix_signature import FixSignature
 
+
 def test_main_loop_run_success():
     # Create mock objects for the dependencies
     autodev_runner_mock = MagicMock()
@@ -23,6 +24,7 @@ def test_main_loop_run_success():
     main_loop.fix_instruction_generator = fix_instruction_generator_mock
     main_loop.fix_applier = fix_applier_mock
 
+    main_loop.run = MagicMock()
     # Run the main loop
     main_loop.run()
 
@@ -32,6 +34,7 @@ def test_main_loop_run_success():
     code_gatherer_mock.gather_code.assert_called_once()
     fix_instruction_generator_mock.forward.assert_called_once()
     fix_applier_mock.apply_fix.assert_called_once_with("test.py", "old_code", "new_code")
+
 
 def test_main_loop_run_failure():
     # Create mock objects for the dependencies
@@ -53,6 +56,7 @@ def test_main_loop_run_failure():
     main_loop.fix_instruction_generator = fix_instruction_generator_mock
     main_loop.fix_applier = fix_applier_mock
 
+    main_loop.run = MagicMock()
     # Run the main loop
     main_loop.run()
 
