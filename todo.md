@@ -57,6 +57,16 @@ Modified tests accordingly and re-ran the suite, confirming improved outcomes.
 ## next steps
 Add further tests for edge cases and update documentation if necessary.
 
+# Refine whitespace handling in file replacements.
+## details
+Current tests indicate that replacements are not applied correctly when extra whitespace or Windows line endings are present. Review and revise regex patterns used in FixApplier to account for these variations.
+## hypothesis
+Adopting regex improvements and referencing formatting best practices from [usecodeblocks.com](https://usecodeblocks.com/) and style guidelines from [peps.python.org](https://peps.python.org/pep-0008/) will ensure consistent code replacement regardless of platform-specific whitespace.
+## action log
+Pending implementation.
+## next steps
+Analyze failing test cases and update regex patterns accordingly.
+
 # Additional Resources
 - Fenced Code Blocks documentation: [python-markdown.github.io](https://python-markdown.github.io/extensions/fenced_code_blocks/)
 - Atomic Commits and Changesets: [en.wikipedia.org](https://en.wikipedia.org/wiki/Changeset)
