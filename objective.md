@@ -1,22 +1,7 @@
 # Objective
 
-This document outlines the objectives and references supporting our auto-fix system leveraging autonomous module creation and error repair.
+This project aims to build a robust, autonomous error-fixing system that can run any Python program (e.g., autodev.py) without modifying its core files. Instead, the system intelligently analyzes runtime errors—such as missing modules, undefined functions, or other common issues—and dynamically generates the required code to resolve them. By capturing error messages, generating fix instructions with an LLM model, and applying fixes through auxiliary components, the system can iteratively achieve a stable execution state.
 
-**Web Search References:**
+The approach is designed to be generic and safe: it leverages the current working directory for context, ensuring that file operations are relative to the execution environment ([en.wikipedia.org](https://en.wikipedia.org/wiki/Working_directory), [current.workingdirectory.net](https://current.workingdirectory.net/cwd/), [www.wikiwand.com](https://www.wikiwand.com/en/Working_directory)). It also emphasizes best practices for error handling and code modification by automatically generating missing modules and stubs without altering the primary program files ([www.computerhope.com](https://www.computerhope.com/jargon/c/currentd.htm), [www.geeksforgeeks.org](https://www.geeksforgeeks.org/get-directory-of-current-python-script/)).
 
-1. [docs.github.com](https://docs.github.com/en/repositories/working-with-files/managing-files/moving-a-file-to-a-new-location)  
-   Guidance on moving files using command line operations.
-
-2. [usecodeblocks.com](https://usecodeblocks.com/)  
-   Instructions on using code blocks for clear and effective documentation formatting.
-
-3. [computercraft.info](https://computercraft.info/wiki/Rename)  
-   Details on file and directory renaming processes.
-
-4. [aider.chat](https://aider.chat/docs/usage.html)  
-   Best practices on minimal file modifications and code generation to avoid overwhelming the LLM.
-
-5. [onivim.github.io](https://onivim.github.io/docs/using-onivim/editing-and-deleting)  
-   Recommendations on editing and deleting operations for efficient text manipulation.
-
-The system is designed to run programs like autodev.py without altering core files, and automatically generate required missing modules.
+Additional insights were gathered from a recent web search ([en.wikipedia.org](https://en.wikipedia.org/wiki/Example) on examples, [en.wikipedia.org](https://en.wikipedia.org/wiki/Main_Page) for general context, and [en.wikipedia.org](https://en.wikipedia.org/wiki/In-place) for in-place algorithm principles) to inform the design and implementation strategies of the system.
