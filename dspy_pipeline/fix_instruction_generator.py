@@ -25,10 +25,15 @@ class FixInstructionGenerator(dspy.Module):
         Generates fix instructions using a DSPy Predict module.
         """
         try:
-            # Use the DSPy Predict module to generate fix instructions
-            prediction = self.predictor(code=code, error=error)
-            return FixSignature(filename=prediction.filename, search=prediction.search, replacement=prediction.replacement, code_text=code, error_text=error)
-
+            try:
+                prediction = self.predictor(code=code, error=error)
+            except AssertionError as e:
+                if "No LM is loaded" in str(e):
+                    from dspy_pipeline.fix_module import FixModule
+                    prediction = FixModule().forward(code, error)
+                else:
+                    raise
+            return prediction
         except Exception as e:
             logging.exception(f"Error generating fix instructions: {e}")
             return FixSignature(filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}", code_text=code, error_text=error)
