@@ -1,3 +1,16 @@
+Template:
+# <todo description>
+## details
+details of what needs to be done
+## hypothesis
+all hyptohesis relevant to the todo including evidence
+## action log
+what actions you did and what you learned while working on the item
+## next steps
+
+
+
+
 
 # Remove KeyboardInterrupt expectation in main loop integration test.
 ## details
@@ -19,10 +32,3 @@ Add logging around file content modifications to determine why expected replacem
 ## details
 Ensure that all test cases match the latest system behavior and remove outdated expectations (e.g., expecting exceptions that are no longer raised).
 
-## References
-
-- [docs.python.org](https://docs.python.org/3/library/sys.html)
-- [docs.python.org](https://docs.python.org/3.8/library/sys.html)
-- [docs.python.org](https://docs.python.org/3/tutorial/interpreter.html)
-- [docs.python.org](https://docs.python.org/3/tutorial/modules.html)
-- [docs.python.org](https://docs.python.org/3.4/library/sys.html)
