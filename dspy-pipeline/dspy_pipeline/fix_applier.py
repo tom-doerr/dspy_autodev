@@ -27,7 +27,7 @@ class FixApplier:
                     pattern = re.compile(r'(\s*)' + re.escape(search_clean) + r'(\s*)')
                     new_content, count = re.subn(pattern, lambda m: m.group(1) + replace_block + m.group(2), content, count=1)
                 if count:
-                     with open(filename, "w", newline="") as f:
+                     with open(filename, "w", encoding="utf8") as f:
                           f.write(new_content)
                 console.print(f"[green]Applied patch to {filename}.[/green]")
 

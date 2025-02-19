@@ -29,6 +29,7 @@ class FixInstructionGenerator(dspy.Module):
                 prediction = self.predictor(code=code, error=error)
             except AssertionError as e:
                 if "No LM is loaded" in str(e):
+                    logging.error("LM not loaded. Ensure dspy.configure() is called early. See [developer.lsst.io](https://developer.lsst.io) for guidance.")
                     from dspy_pipeline.fix_module import FixModule
                     prediction = FixModule().forward(code, error)
                 else:
