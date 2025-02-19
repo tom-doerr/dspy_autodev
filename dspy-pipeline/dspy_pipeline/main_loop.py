@@ -33,6 +33,9 @@ class MainLoop:
                 # Generate fix instructions from the error and code
                 try:
                     fix_instructions = self.fix_instruction_generator.forward(code=combined_code, error=autodev_result[2])
+                    print("autodev_result:", autodev_result)
+                    print("combined_code:", combined_code)
+                    print("fix_instructions:", fix_instructions)
                     # Apply the fix
                     self.fix_applier.apply_fix(fix_instructions.filename, fix_instructions.search, fix_instructions.replacement)
                     logging.info(f"Applied fix to {fix_instructions.filename}")

@@ -31,6 +31,19 @@ class FixApplier:
                         console.print(f"[green]Applied patch to {filename} using diff-match-patch.[/green]")
                     else:
                         console.print(f"[red]Patch could not be fully applied to {filename}.[/red]")
+                elif replace_block.lstrip().startswith('['):
+                    import json
+                    import jsonpatch
+                    try:
+                        patch_obj = json.loads(replace_block)
+                        json_content = json.loads(content)
+                        new_content = json.dumps(jsonpatch.apply_patch(json_content, patch_obj), indent=2)
+                        with open(filename, "w", encoding="utf8") as f:
+                            f.write(new_content)
+                        console.print(f"[green]Applied JSON patch to {filename} using jsonpatch.[/green]")
+                    except Exception as err:
+                        console.print(f"[red]Failed to apply JSON patch to {filename}: {err}[/red]")
+                        return
                 else:
                     if search_clean in content:
                         new_content = content.replace(search_clean, replace_block, 1)

@@ -6,13 +6,13 @@ from dspy_pipeline.fix_signature import FixSignature
 
 class ErrorToFix(Signature):
     """
-    Given code and an error traceback, generate a fix.
+    Given code and an error traceback, generate a JSON Patch (in standard JSON Patch format) that fixes the error.
     """
     code: str = dspy.InputField(desc="Combined source code from all files, including autodev.py.")
     error: str = dspy.InputField(desc="Error message and traceback from autodev.py execution.")
     filename: str = dspy.OutputField(desc="File path to apply the fix or create if it does not exist.")
     search: str = dspy.OutputField(desc="Code block to search for (empty if creating a new file).")
-    replacement: str = dspy.OutputField(desc="Replacement code or initial file content.")
+    replacement: str = dspy.OutputField(desc="JSON Patch to apply to the code to fix the error.")
 
 class FixInstructionGenerator(dspy.Module):
     def __init__(self, model=None):
