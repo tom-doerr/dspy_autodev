@@ -44,5 +44,3 @@ class MainLoop:
                 logging.exception(f"Unexpected error in main loop: {e}")
             sleep(1)
             count += 1
-            if count >= 1:
-                raise KeyboardInterrupt
