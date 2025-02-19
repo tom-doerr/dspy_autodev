@@ -25,8 +25,8 @@ def test_main_loop_integration(monkeypatch, tmp_path):
 
     # Override run_autodev to return a simulated error
     monkeypatch.setattr("dspy_pipeline.autodev_runner.AutodevRunner.run_autodev", fake_run_autodev)
-    # Override time.sleep to stop the infinite loop after one iteration
-    monkeypatch.setattr(time, "sleep", fake_sleep)
+    # Override time.sleep in MainLoop to stop the infinite loop after one iteration
+    monkeypatch.setattr("dspy_pipeline.main_loop.time", "sleep", fake_sleep)
     # Override FixApplier.apply_fix to capture its call parameters
     fake_applier = FakeFixApplier()
     monkeypatch.setattr("dspy_pipeline.fix_applier.FixApplier.apply_fix", fake_applier.apply_fix)

@@ -29,7 +29,9 @@ class FixApplier:
                 if count:
                      with open(filename, "w", encoding="utf8") as f:
                           f.write(new_content)
-                console.print(f"[green]Applied patch to {filename}.[/green]")
+                     console.print(f"[green]Applied patch to {filename}.[/green]")
+                else:
+                     console.print(f"[red]No matching search block found in {filename}. Patch not applied.[/red]")
 
             except FileNotFoundError:
                 logging.error(f"File not found: {filename}")
