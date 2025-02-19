@@ -1,3 +1,4 @@
+import logging
 from dspy_pipeline.code_gatherer import CodeGatherer
 from dspy_pipeline.autodev_runner import AutodevRunner
 from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
