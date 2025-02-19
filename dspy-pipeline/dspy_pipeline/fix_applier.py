@@ -36,12 +36,27 @@ class FixApplier:
                     import jsonpatch
                     try:
                         patch_obj = json.loads(replace_block)
+                    except Exception as err:
+                        console.print(f"[red]Failed to parse JSON patch: {err}[/red]")
+                        return
+                    try:
                         json_content = json.loads(content)
-                        new_content = json.dumps(jsonpatch.apply_patch(json_content, patch_obj), indent=2)
+                        new_json = jsonpatch.apply_patch(json_content, patch_obj)
+                        new_content = json.dumps(new_json, indent=2)
                         with open(filename, "w", encoding="utf8") as f:
                             f.write(new_content)
                         console.print(f"[green]Applied JSON patch to {filename} using jsonpatch.[/green]")
                     except Exception as err:
+                        try:
+                            if isinstance(patch_obj, list) and len(patch_obj) == 1 and \
+                               patch_obj[0].get("op") == "add" and patch_obj[0].get("path") == "/-":
+                                new_content = patch_obj[0].get("value", "")
+                                with open(filename, "w", encoding="utf8") as f:
+                                    f.write(new_content)
+                                console.print(f"[green]Created or replaced {filename} using JSON patch fallback.[/green]")
+                                return
+                        except Exception as inner_err:
+                            console.print(f"[red]Fallback failed: {inner_err}[/red]")
                         console.print(f"[red]Failed to apply JSON patch to {filename}: {err}[/red]")
                         return
                 else:

@@ -69,3 +69,20 @@ def test_json_patch_on_valid_json_object(tmp_path):
     json_data = json.loads(new_content)
     assert json_data.get("dummy") == "value"
     assert json_data.get("get_ether_price") == "def get_ether_price():\n    return 1000"
+
+def test_json_patch_fallback_on_non_json_file(tmp_path):
+    test_file = tmp_path / "fallback.py"
+    original_content = "some non-json content"
+    test_file.write_text(original_content)
+    json_patch = '''[
+  {
+    "op": "add",
+    "path": "/-",
+    "value": "def get_ether_price():\\n    # Replace with actual implementation to fetch Ether price\\n    return 1000.0"
+  }
+]'''
+    fix_applier = FixApplier()
+    fix_applier.apply_fix(str(test_file), "", json_patch)
+    new_content = test_file.read_text()
+    expected = "def get_ether_price():\n    # Replace with actual implementation to fetch Ether price\n    return 1000.0"
+    assert new_content == expected
