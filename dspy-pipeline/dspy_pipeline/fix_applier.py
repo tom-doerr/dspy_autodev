@@ -16,30 +16,14 @@ class FixApplier:
 
         if os.path.exists(filename):
             try:
-                with open(filename, 'r', encoding='utf8') as file:
-                    content = file.read()
-    
-                search_clean = search_block.strip()
-    
-                # First, try an exact match replacement
-                if search_clean in content:
-                    content = content.replace(search_clean, replace_block, 1)
-                else:
-                    # If not found, fall back to a regex that ignores extra surrounding whitespace.
-                    import re
-                    pattern = re.compile(r'\s*' + re.escape(search_clean) + r'\s*')
-                    if re.search(pattern, content):
-                        content = re.sub(pattern, replace_block, content, count=1)
-                    else:
-                        console.print(f"[red]Search block not found in {filename}.[/red]")
-                        console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
-                        console.print(f"[yellow]Replace block:[/yellow]")
-                        console.print(replace_block)
-                        return
-    
-                with open(filename, 'w', encoding='utf8') as file:
-                    file.write(content)
-    
+                import re
+                with open(filename, "r", newline="") as f:
+                     content = f.read()
+                pattern = r"\s*" + re.escape(search_block.strip()) + r"\s*"
+                new_content, count = re.subn(pattern, replace_block, content, count=1)
+                if count:
+                     with open(filename, "w", newline="") as f:
+                          f.write(new_content)
                 console.print(f"[green]Applied patch to {filename}.[/green]")
 
             except FileNotFoundError:
