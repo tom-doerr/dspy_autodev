@@ -2,9 +2,6 @@ from dspy_pipeline.code_gatherer import CodeGatherer
 from dspy_pipeline.autodev_runner import AutodevRunner
 from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
 from dspy_pipeline.fix_applier import FixApplier
-import logging
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class MainLoop:
     def __init__(self):
