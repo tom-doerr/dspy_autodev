@@ -9,7 +9,7 @@ def fake_run_autodev(self):
     return (1, "", "NameError: name 'test_function' is not defined")
 
 def fake_sleep(duration):
-    raise KeyboardInterrupt
+    pass
 
 class FakeFixApplier:
     def __init__(self):
@@ -32,8 +32,7 @@ def test_main_loop_integration(monkeypatch, tmp_path):
     monkeypatch.setattr("dspy_pipeline.fix_applier.FixApplier.apply_fix", fake_applier.apply_fix)
 
     loop = MainLoop()
-    with pytest.raises(KeyboardInterrupt):
-        loop.run()
+    loop.run()
 
     # According to FixModule NameError branch, fix should be:
     # filename: "autodev.py", search: "test_function()", replacement: "new_test_function()"
