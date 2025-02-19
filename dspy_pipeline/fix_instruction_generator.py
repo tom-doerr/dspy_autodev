@@ -35,14 +35,14 @@ class FixInstructionGenerator(dspy.Module):
                 return FixSignature(filename=f"{missing_module}.py", search="", replacement=replacement, code_text=code, error_text=error)
         try:
             prediction = self.predictor(code=code, error=error)
-            except AssertionError as e:
-                if "No LM is loaded" in str(e):
-                    logging.error("LM not loaded. Ensure dspy.configure() is called early. See [developer.lsst.io](https://developer.lsst.io) for guidance.")
-                    from dspy_pipeline.fix_module import FixModule
-                    prediction = FixModule().forward(code, error)
-                else:
-                    raise
-            return prediction
+        except AssertionError as e:
+            if "No LM is loaded" in str(e):
+                logging.error("LM not loaded. Ensure dspy.configure() is called early. See [developer.lsst.io](https://developer.lsst.io) for guidance.")
+                from dspy_pipeline.fix_module import FixModule
+                prediction = FixModule().forward(code, error)
+            else:
+                raise
+        return prediction
         except Exception as e:
             logging.exception(f"Error generating or applying fix: {e}")
             return FixSignature(filename="UNKNOWN", search="", replacement=f"# Error generating fix instructions: {e}", code_text=code, error_text=error)
