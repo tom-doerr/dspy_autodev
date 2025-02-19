@@ -24,9 +24,8 @@ def test_main_loop_run_success():
     main_loop.fix_instruction_generator = fix_instruction_generator_mock
     main_loop.fix_applier = fix_applier_mock
 
-    main_loop.run = MagicMock()
-    # Run the main loop
-    main_loop.run()
+    # Run the main loop for 1 iteration
+    main_loop.run(iterations=1)
 
     # Assert that the mock objects were called correctly
     autodev_runner_mock.run_autodev.assert_called_once()
@@ -56,9 +55,8 @@ def test_main_loop_run_failure():
     main_loop.fix_instruction_generator = fix_instruction_generator_mock
     main_loop.fix_applier = fix_applier_mock
 
-    main_loop.run = MagicMock()
-    # Run the main loop
-    main_loop.run()
+    # Run the main loop for 1 iteration
+    main_loop.run(iterations=1)
 
     # Assert that the mock objects were called correctly
     autodev_runner_mock.run_autodev.assert_called_once()

@@ -12,7 +12,7 @@ class MainLoop:
         self.fix_instruction_generator = FixInstructionGenerator()
         self.fix_applier = FixApplier()
 
-    def run(self):
+    def run(self, iterations=0):
         """
         Runs the main loop of the autodev pipeline.
         """
@@ -47,3 +47,5 @@ class MainLoop:
                 logging.exception(f"Unexpected error in main loop: {e}")
             sleep(1)
             count += 1
+            if iterations and count >= iterations:
+                break
