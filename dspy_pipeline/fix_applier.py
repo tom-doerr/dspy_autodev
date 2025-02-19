@@ -2,6 +2,8 @@ import os
 import logging
 import re
 from rich.console import Console
+import jsonpatch
+import json
 
 console = Console()
 
@@ -20,8 +22,15 @@ class FixApplier:
                 with open(filename, 'r', encoding='utf8') as file:
                     content = file.read()
 
-                import re
                 search_clean = search_block.strip()
+
+                # If search_block is empty, replace the entire file content with replace_block
+                if not search_clean:
+                    with open(filename, 'w', encoding='utf8') as file:
+                        file.write(replace_block)
+                    console.print(f"[green]Replaced entire content of {filename}.[/green]")
+                    return
+
                 # First, try an exact match replacement.
                 if search_clean in content:
                     content = content.replace(search_clean, replace_block, 1)
@@ -37,11 +46,11 @@ class FixApplier:
                         console.print(f"[yellow]Replace block:[/yellow]")
                         console.print(replace_block)
                         return
-   
-                    with open(filename, 'w', encoding='utf8') as file:
-                        file.write(content)
-   
-                    console.print(f"[green]Applied patch to {filename}.[/green]")
+
+                with open(filename, 'w', encoding='utf8') as file:
+                    file.write(content)
+
+                console.print(f"[green]Applied patch to {filename}.[/green]")
 
             except FileNotFoundError:
                 logging.error(f"File not found: {filename}")
