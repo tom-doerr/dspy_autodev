@@ -31,6 +31,8 @@ def test_main_loop_integration(tmpdir, monkeypatch, caplog):
 
     # Assert that the correct log messages were generated
     assert "Applied fix to ether_module.py" in caplog.text
+    # Assert that autodev.py was not modified
+    assert "from ether_module import get_ether_price" in autodev_file.read()
 
 def test_main_loop_integration_autodev_modified(tmpdir, monkeypatch, caplog):
     # Create a dummy autodev.py
