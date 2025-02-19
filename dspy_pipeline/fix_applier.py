@@ -1,9 +1,8 @@
-import os
 import logging
+import os
 import re
+
 from rich.console import Console
-import jsonpatch
-import json
 
 console = Console()
 
