@@ -12,6 +12,7 @@ class FixApplier:
         # Prevent edits to autodev.py
         if os.path.basename(filename) == "autodev.py":
             console.print("[red]Skipping modification of autodev.py. Please fix autodev.py manually.[/red]")
+            logging.info("Skipping modification of autodev.py. Please fix autodev.py manually.")
             return
 
         if os.path.exists(filename):
