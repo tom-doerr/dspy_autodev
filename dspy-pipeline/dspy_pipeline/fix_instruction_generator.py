@@ -9,19 +9,19 @@ from dspy_pipeline.fix_signature import FixSignature
 
 class ErrorToFix(Signature):
     """
-    Given code and an error traceback, generate a JSON Patch (in standard JSON Patch format) that fixes the error.
+    Given code and an error traceback, generate replacement text that fixes the error.
     """
     code: str = dspy.InputField(desc="Combined source code from all files, including autodev.py.")
     error: str = dspy.InputField(desc="Error message and traceback from autodev.py execution.")
     filename: str = dspy.OutputField(desc="File path to apply the fix or create if it does not exist.")
     search: str = dspy.OutputField(desc="Code block to search for (empty if creating a new file).")
-    replacement: str = dspy.OutputField(desc="JSON Patch to apply to the code to fix the error.")
+    replacement: str = dspy.OutputField(desc="Replacement code or initial file content.")
 
 class FixInstructionGenerator(dspy.Module):
     def __init__(self, model=None):
         super().__init__()
         self.model = model
-        self.predictor = dspy.ChainOfThought(ErrorToFix)
+        self.predictor = dspy.Predict(ErrorToFix)
 
     def forward(self, code: str, error: str) -> FixSignature:
         """
