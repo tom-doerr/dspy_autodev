@@ -2,6 +2,8 @@ import logging
 import dspy
 import logging
 import dspy
+import logging
+import dspy
 from dspy.signatures import Signature
 from dspy_pipeline.fix_signature import FixSignature
 
@@ -25,28 +27,18 @@ class FixInstructionGenerator(dspy.Module):
         """
         Generates fix instructions using a DSPy Predict module.
         """
-        # Mock the prediction to return a FixSignature with a JSON patch
-        filename = "ether_module.py"
-        search = ""
-        replacement = '''[
-              {
-                "op": "add",
-                "path": "/-",
-                "value": "def get_ether_price():\\n    # Replace with actual implementation to fetch Ether price\\n    return 1000.0"
-              }
-            ]'''
-        prediction = FixSignature(filename=filename, search=search, replacement=replacement, code_text=code, error_text=error)
-        return prediction
-
-    except Exception as e:
-        logging.exception(f"Error generating fix instructions: {e}")
-        return FixSignature(
-            code_text=code,
-            error_text=error,
-            filename="UNKNOWN",
-            search="",
-            replacement=f"# Error generating fix instructions: {e}"
-        )
+        try:
+            prediction = self.predictor(code=code, error=error)
+            return prediction
+        except Exception as e:
+            logging.exception(f"Error generating fix instructions: {e}")
+            return FixSignature(
+                code_text=code,
+                error_text=error,
+                filename="UNKNOWN",
+                search="",
+                replacement=f"# Error generating fix instructions: {e}"
+            )
 
     def get_fix_instructions(self, code: str, error: str) -> FixSignature:
         return self.forward(code, error)
