@@ -35,29 +35,29 @@ class FixApplier:
                     content = content.replace(search_clean, replace_block, 1)
                 else:
                     # Build a pattern that captures leading and trailing whitespace.
-                    pattern = re.compile(r'(\s*)' + re.escape(search_clean) + r'(\s*)')
-                    if re.search(pattern, content):
-                        # Replace while preserving the surrounding whitespace.
-                        content = re.sub(pattern, lambda m: m.group(1) + replace_block + m.group(2), content, count=1)
+                    pattern = re.compile(r"(\s*)" + re.escape(search_clean) + r"(\s*)")
+                    new_content, count = re.subn(
+                        pattern,
+                        lambda m: m.group(1) + replace_block + m.group(2),
+                        content,
+                        count=1,
+                    )
+                    if count:
+                        logging.info(
+                            f"Replacement count: {count}, new content for {filename}: {new_content}"
+                        )
+                        with open(filename, "w", encoding="utf8") as f:
+                            f.write(new_content)
+                        console.print(f"[green]Applied patch to {filename}.[/green]")
                     else:
-                        console.print(f"[red]Search block not found in {filename}.[/red]")
-                        console.print(f"[yellow]Expected search block:[/yellow] {search_block}")
-                        console.print(f"[yellow]Replace block:[/yellow]")
-                        console.print(replace_block)
-                        return
-
-                with open(filename, 'w', encoding='utf8') as file:
-                    file.write(content)
-
-                console.print(f"[green]Applied patch to {filename}.[/green]")
-
-            except FileNotFoundError:
-                logging.error(f"File not found: {filename}")
+                        console.print(
+                            f"[red]No matching search block found in {filename}. Patch not applied.[/red]"
+                        )
             except Exception as e:
                 logging.error(f"Error applying fix to {filename}: {e}")
         else:
             try:
-                with open(filename, 'w', encoding='utf8') as file:
+                with open(filename, "w", encoding="utf8") as file:
                     file.write(replace_block)
                 console.print(f"[blue]Created new file {filename}.[/blue]")
             except Exception as e:
