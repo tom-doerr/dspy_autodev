@@ -1,5 +1,5 @@
 import os
-import time
+from time import sleep
 import pytest
 from dspy_pipeline.main_loop import MainLoop
 

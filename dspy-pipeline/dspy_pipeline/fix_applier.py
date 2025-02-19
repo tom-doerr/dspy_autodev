@@ -17,10 +17,15 @@ class FixApplier:
         if os.path.exists(filename):
             try:
                 import re
-                with open(filename, "r", newline="") as f:
-                     content = f.read()
-                pattern = r"\s*" + re.escape(search_block.strip()) + r"\s*"
-                new_content, count = re.subn(pattern, replace_block, content, count=1)
+                with open(filename, "r", encoding="utf8") as f:
+                    content = f.read()
+                search_clean = search_block.strip()
+                if search_clean in content:
+                    new_content = content.replace(search_clean, replace_block, 1)
+                    count = 1
+                else:
+                    pattern = re.compile(r'(\s*)' + re.escape(search_clean) + r'(\s*)')
+                    new_content, count = re.subn(pattern, lambda m: m.group(1) + replace_block + m.group(2), content, count=1)
                 if count:
                      with open(filename, "w", newline="") as f:
                           f.write(new_content)
