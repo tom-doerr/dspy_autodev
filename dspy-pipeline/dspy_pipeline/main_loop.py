@@ -39,6 +39,8 @@ class MainLoop:
                     logging.error(f"File not found: {e}")
                 except Exception as e:
                     logging.exception(f"Error generating or applying fix. Details: {e}")
+            except Exception as e:
+                logging.exception(f"Unexpected error in main loop: {e}")
             sleep(1)
             count += 1
             if count >= 1:
