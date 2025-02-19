@@ -37,7 +37,7 @@ class FixInstructionGenerator(dspy.Module):
             return prediction
         except Exception as e:
             logging.exception(f"Error generating fix instructions: {e}")
-            return FixSignature(filename=UNKNOWN_FILE, search="", replacement=f"{MISSING_CONTENT_COMMENT}\n# Error generating fix instructions: {e}", code_text=code, error_text=error)
+            return FixSignature(filename="UNKNOWN", search="", replacement=f"# Error generating fix instructions: {e}", code_text=code, error_text=error)
 
     def get_fix_instructions(self, code: str, error: str) -> FixSignature:
         return self.forward(code, error)
