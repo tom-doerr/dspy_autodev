@@ -32,19 +32,13 @@ class MainLoop:
                 # Generate fix instructions from the error and code
                 try:
                     fix_instructions = self.fix_instruction_generator.forward(code=combined_code, error=autodev_result[2])
-
                     # Apply the fix
                     self.fix_applier.apply_fix(fix_instructions.filename, fix_instructions.search, fix_instructions.replacement)
                     logging.info(f"Applied fix to {fix_instructions.filename}")
-
-                except Exception as e:
-                    logging.exception(f"Error generating or applying fix. Details: {e}")
-
-
                 except FileNotFoundError as e:
                     logging.error(f"File not found: {e}")
                 except Exception as e:
-                    logging.exception(f"An unexpected error occurred: {e}")
+                    logging.exception(f"Error generating or applying fix. Details: {e}")
             time.sleep(1)
             count += 1
             if count >= 1:
