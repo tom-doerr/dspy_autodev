@@ -1,4 +1,5 @@
 import pytest
+import re
 import os
 from dspy_pipeline.fix_module import FixModule, UNKNOWN_FILE, AUTODEV_FILE, NEW_FILE_COMMENT, MISSING_CONTENT_COMMENT
 from dspy_pipeline.fix_applier import FixApplier
@@ -64,16 +65,16 @@ def test_fix_applier_file_exists_and_modified(tmpdir):
     file_path.write("def some_code():\n    old_function()\n")
     apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
-    assert "new_old_function()" in content, "The replacement should be in the file"
-    assert "old_function()" not in content, "The original code should not be in the file"
+    assert re.search(r"\bnew_old_function\(\)\b", content), "The replacement should be in the file"
+    assert not re.search(r"\bold_function\(\)\b", content), "The original code should not be in the file"
 
 def test_fix_applier_file_exists_and_modified_windows_line_endings(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\r\n    old_function()\r\n")
     apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
-    assert "new_old_function()" in content, "The replacement should be in the file"
-    assert "old_function()" not in content.strip(), "The original code should not be in the file"
+    assert re.search(r"\bnew_old_function\(\)\b", content), "The replacement should be in the file"
+    assert not re.search(r"\bold_function\(\)\b", content), "The original code should not be in the file"
 
 def test_fix_applier_file_exists_but_search_block_not_found(tmpdir):
     file_path = tmpdir.join("test_file.py")
@@ -102,24 +103,24 @@ def test_fix_applier_multiple_occurrences(tmpdir):
     file_path.write("def some_code():\n    old_function()\n    old_function()\n")
     apply_fix(str(file_path), "old_function()", "new_old_function()")
     content = file_path.read()
-    assert content.count("new_old_function()") == 1, "The replacement should only occur once"
-    assert content.count("old_function()") == 1, "One original code occurrence should remain"
+    assert len(re.findall(r"\bnew_old_function\(\)\b", content)) == 1, "The replacement should only occur once"
+    assert len(re.findall(r"\bold_function\(\)\b", content)) == 1, "One original code occurrence should remain"
 
 def test_fix_applier_leading_whitespace(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\n    old_function()\n")
     apply_fix(str(file_path), "   old_function()", "new_old_function()")
     content = file_path.read()
-    assert "old_function()" not in content, "The original code should not be in the file"
-    assert "new_old_function()" in content, "The replacement should be in the file"
+    assert not re.search(r"\bold_function\(\)\b", content), "The original code should not be in the file"
+    assert re.search(r"\bnew_old_function\(\)\b", content), "The replacement should be in the file"
 
 def test_fix_applier_trailing_whitespace(tmpdir):
     file_path = tmpdir.join("test_file.py")
     file_path.write("def some_code():\n    old_function()\n")
     apply_fix(str(file_path), "old_function()   ", "new_old_function()")
     content = file_path.read()
-    assert "old_function()" not in content, "The original code should not be in the file"
-    assert "new_old_function()" in content, "The replacement should be in the file"
+    assert not re.search(r"\bold_function\(\)\b", content), "The original code should not be in the file"
+    assert re.search(r"\bnew_old_function\(\)\b", content), "The replacement should be in the file"
 
 def test_fix_applier_empty_file(tmpdir):
     file_path = tmpdir.join("test_file.py")
