@@ -1,4 +1,3 @@
-Template:
 # <todo description>
 ## details
 details of what needs to be done
@@ -63,5 +62,8 @@ Add further tests for edge cases and update documentation if necessary.
 - Atomic Commits and Changesets: [en.wikipedia.org](https://en.wikipedia.org/wiki/Changeset)
 - Code Block Formatting Best Practices: [usecodeblocks.com](https://usecodeblocks.com/)
 - Language Support in Editors: [code.visualstudio.com](https://code.visualstudio.com/docs/languages/overview)
+- Markdown Basics: [markdown-guide.readthedocs.io](https://markdown-guide.readthedocs.io/en/latest/basics.html)
+- Docstring Conventions: [peps.python.org](https://peps.python.org/pep-0257/)
+- Python Style Guide: [peps.python.org](https://peps.python.org/pep-0008/)
 - Debugging Source-Code Locations: [python3-trepan.readthedocs.io](https://python3-trepan.readthedocs.io/en/latest/syntax/location.html)
 
