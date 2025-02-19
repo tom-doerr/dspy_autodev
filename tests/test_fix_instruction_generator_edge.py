@@ -1,5 +1,6 @@
 import pytest
 from dspy_pipeline.fix_instruction_generator import FixInstructionGenerator
+from dspy_pipeline.fix_module import UNKNOWN_FILE, MISSING_CONTENT_COMMENT
 
 def test_fix_instruction_generator_exception(monkeypatch):
     generator = FixInstructionGenerator()
