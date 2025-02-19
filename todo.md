@@ -63,4 +63,5 @@ Add further tests for edge cases and update documentation if necessary.
 - Atomic Commits and Changesets: [en.wikipedia.org](https://en.wikipedia.org/wiki/Changeset)
 - Code Block Formatting Best Practices: [usecodeblocks.com](https://usecodeblocks.com/)
 - Language Support in Editors: [code.visualstudio.com](https://code.visualstudio.com/docs/languages/overview)
+- Debugging Source-Code Locations: [python3-trepan.readthedocs.io](https://python3-trepan.readthedocs.io/en/latest/syntax/location.html)
 
