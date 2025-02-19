@@ -1,7 +1,6 @@
 import logging
 import dspy
 from dspy.signatures import Signature
-from dspy_pipeline.fix_module import FixModule, UNKNOWN_FILE, MISSING_CONTENT_COMMENT, NEW_FILE_COMMENT
 from dspy_pipeline.fix_signature import FixSignature
 
 class ErrorToFix(Signature):
