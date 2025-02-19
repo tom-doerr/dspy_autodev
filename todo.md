@@ -7,6 +7,14 @@ all hypotheses relevant to the todo including evidence
 what actions you did and what you learned while working on the item
 ## next steps
 
+
+
+
+# change Predict to dspy.ChainOfThought 
+
+
+
+
 # Remove KeyboardInterrupt expectation in main loop integration test.
 ## details
 Update test in `tests/test_main_loop_integration.py` to not expect a `KeyboardInterrupt`. The fake_sleep function has been updated to simply pass instead of raising an exception.
