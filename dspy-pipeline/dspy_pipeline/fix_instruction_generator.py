@@ -18,7 +18,7 @@ class FixInstructionGenerator(dspy.Module):
     def __init__(self, model=None):
         super().__init__()
         self.model = model
-        self.predictor = dspy.Predict(ErrorToFix)
+        self.predictor = dspy.ChainOfThought(ErrorToFix)
 
     def forward(self, code: str, error: str) -> FixSignature:
         """
